@@ -1,0 +1,778 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>이타카로의 귀환</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@500;700&family=IM+Fell+English:ital@1&family=Song+Myung&family=Noto+Serif+KR:wght@600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: illuminated-manuscript site. Welcome gate -> map page (header, view switch, stamp track,
+   illuminated chart with story arrows, voyage list) -> one page per booth (full-bleed landscape photo
+   hero + parchment folio). Serif only for titles & names; sans for reading text.
+   Single deliberate look: parchment + lapis + vermilion + gold, in either host theme. */
+:root{
+  color-scheme:light;
+  --parch:#efdfb6;
+  --parch-hi:#f6ead0;
+  --lapis:#1f3c7c;
+  --lapis-deep:#142a5a;
+  --verm:#a3301e;
+  --flame:#e8401f;
+  --gold:#c39a3e;
+  --gold-hi:#f2cf6b;
+  --gold-deep:#8f6b22;
+  --ink:#2c1d0f;
+  --ink-soft:#66503a;
+  --stone:#8d8a84;
+  --line:rgba(44,29,15,.2);
+  --f-deco:"Cinzel Decorative","Cinzel",Georgia,serif;
+  --f-roman:"Cinzel",Georgia,serif;
+  --f-italic:"IM Fell English",Georgia,serif;
+  --f-title:"Song Myung","Noto Serif KR","AppleMyungjo",serif;
+  --f-serif:"Noto Serif KR","AppleMyungjo","Batang",serif;
+  --f-sans:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --gut-l:max(16px,env(safe-area-inset-left,0px));
+  --gut-r:max(16px,env(safe-area-inset-right,0px));
+  --band:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='16'%3E%3Crect width='32' height='16' fill='%23a3301e'/%3E%3Cpath d='M16 1 L26 8 L16 15 L6 8Z' fill='%231f3c7c' stroke='%23c39a3e' stroke-width='1'/%3E%3Ccircle cx='16' cy='8' r='1.8' fill='%23c39a3e'/%3E%3Ccircle cx='0' cy='8' r='1.4' fill='%23c39a3e'/%3E%3Ccircle cx='32' cy='8' r='1.4' fill='%23c39a3e'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--parch)}
+body{
+  margin:0;background:var(--parch);
+  background-image:radial-gradient(ellipse at 50% 0%,var(--parch-hi) 0%,transparent 60%),radial-gradient(ellipse at 100% 100%,rgba(143,107,34,.18),transparent 55%);
+  color:var(--ink);font-family:var(--f-sans);font-size:15px;line-height:1.7;
+  padding-left:var(--gut-l);padding-right:var(--gut-r);padding-block:0 40px;
+}
+a{color:var(--verm)}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.band{height:16px;background:var(--band) repeat-x;background-size:32px 16px;border-block:2px solid var(--gold)}
+
+/* ---------- welcome gate ---------- */
+.gate{position:fixed;inset:0;z-index:50;display:grid;place-items:center;overflow-y:auto;
+  padding:max(24px,env(safe-area-inset-top,0px)) var(--gut-r) max(24px,env(safe-area-inset-bottom,0px)) var(--gut-l);
+  background:linear-gradient(rgba(20,42,90,.72),rgba(20,42,90,.86)),url("map.jpg") center/cover no-repeat,var(--lapis-deep)}
+.gate-card{max-width:450px;width:100%;background:var(--parch-hi);border:3px solid var(--gold-deep);box-shadow:0 30px 60px -20px rgba(0,0,0,.6);text-align:center;display:flex;flex-direction:column}
+.gate-body{padding:28px 24px 26px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.gate-eyebrow{font-family:var(--f-deco);font-size:13px;letter-spacing:.16em;color:var(--gold-deep)}
+.gate h2{margin:0;font-family:var(--f-title);font-weight:400;font-size:clamp(30px,8vw,40px);line-height:1.2;color:var(--lapis-deep);text-wrap:balance}
+.gate p{margin:0;color:var(--ink-soft);font-size:15px;max-width:34ch}
+.gate-rules{list-style:none;margin:6px 0 0;padding:12px 14px;border:1.5px dashed var(--gold-deep);border-radius:8px;text-align:left;display:flex;flex-direction:column;gap:6px;font-size:14px;width:100%}
+.gate-rules li{padding-left:20px;position:relative;line-height:1.55}
+.gate-rules li::before{content:"✦";position:absolute;left:0;color:var(--verm);font-size:12px;top:1px}
+.btn{all:unset;box-sizing:border-box;cursor:pointer;text-align:center;padding:12px 28px;border-radius:999px;background:var(--verm);color:var(--parch-hi);font-family:var(--f-serif);font-weight:700;font-size:16px;border:2px solid var(--gold);box-shadow:0 3px 0 var(--gold-deep)}
+.btn:hover{background:#8c2717}
+.btn:focus-visible{outline:3px solid var(--lapis);outline-offset:3px}
+.gate .btn{margin-top:8px}
+@media (prefers-reduced-motion:no-preference){
+  .gate-card{animation:rise .5s ease-out}
+  @keyframes rise{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+}
+
+/* ---------- map page header ---------- */
+.head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding-top:24px}
+h1{margin:0;font-family:var(--f-title);font-weight:400;font-size:clamp(36px,6.5vw,60px);line-height:1.1;color:var(--lapis-deep);text-wrap:balance}
+.sub{font-family:var(--f-deco);font-size:clamp(12px,1.6vw,16px);letter-spacing:.14em;color:var(--gold-deep)}
+
+.switch{align-self:center;display:inline-grid;grid-template-columns:1fr 1fr;border:2px solid var(--gold);border-radius:999px;padding:3px;background:var(--parch-hi);box-shadow:0 2px 0 var(--gold-deep)}
+.switch button{all:unset;cursor:pointer;padding:8px 20px;border-radius:999px;font-family:var(--f-serif);font-weight:700;font-size:15px;color:var(--lapis);text-align:center;white-space:nowrap}
+.switch button[aria-pressed="true"]{background:var(--lapis);color:var(--parch-hi);box-shadow:inset 0 0 0 1.5px var(--gold)}
+.switch button:focus-visible{outline:2px solid var(--verm);outline-offset:2px}
+@media (max-width:420px){.switch button{padding:8px 14px;font-size:14px}}
+
+/* ---------- stamp track ---------- */
+.track{align-self:center;width:100%;max-width:560px;display:flex;flex-direction:column;gap:6px}
+.t-status{text-align:center;font-size:14.5px;color:var(--ink)}
+.t-status b{color:var(--verm);font-size:16px}
+.t-cells{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:4px}
+.cell{height:14px;border-radius:3px;border:1.5px dashed var(--gold-deep);background:transparent}
+.cell.on{border:1.5px solid var(--gold-deep);background:linear-gradient(var(--flame),var(--verm))}
+.cell.goal{box-shadow:0 0 0 2px var(--parch),0 0 0 3.5px var(--lapis)}
+.cell.goal.on{background:linear-gradient(var(--gold-hi),var(--gold))}
+.t-marks{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:4px;font-size:11.5px;line-height:1.3;color:var(--ink-soft)}
+.t-marks span{white-space:nowrap;text-align:center}
+.t-marks .m7{grid-column:7;font-weight:700;color:var(--lapis);justify-self:center}
+.t-marks .m9{grid-column:9;justify-self:end;text-align:right}
+.rules{align-self:center;max-width:620px;list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:13.5px;color:var(--ink-soft)}
+.rules li{display:flex;gap:6px}
+.rules li::before{content:"✦";color:var(--verm);font-size:11px;line-height:2}
+
+/* ---------- framed plate ---------- */
+.plate{position:relative;border:3px solid var(--gold-deep);padding:5px;background:var(--lapis-deep);box-shadow:0 22px 40px -22px rgba(30,15,0,.7)}
+.plate-in{border:1.5px solid var(--gold);position:relative}
+.stage{position:relative;width:100%;aspect-ratio:1491/1055;max-width:100%}
+.stage img{position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block;user-select:none;-webkit-user-drag:none}
+.arrows{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.arrows .under{fill:none;stroke:var(--parch-hi);stroke-width:.75;stroke-linecap:round;opacity:.85}
+.arrows .over{fill:none;stroke:var(--verm);stroke-width:.38;stroke-linecap:round;stroke-dasharray:1.3 .9}
+.arrows .head-u{fill:var(--parch-hi);stroke:var(--parch-hi);stroke-width:.5;stroke-linejoin:round}
+.arrows .head-o{fill:var(--verm)}
+
+/* pins: bright flame seals; stamped ones turn to grey stone */
+.pin{all:unset;position:absolute;transform:translate(-50%,-50%);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;z-index:2;-webkit-tap-highlight-color:transparent}
+.seal{position:relative;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 34% 28%,#ff8a5c 0%,var(--flame) 45%,#b8230d 100%);
+  border:2.5px solid #fff4dc;
+  box-shadow:0 0 0 2.5px var(--gold),0 0 14px 3px rgba(255,120,60,.75),0 4px 8px rgba(20,8,0,.6);
+  font-family:var(--f-roman);font-weight:700;font-size:17px;color:#fff;line-height:1;text-shadow:0 1px 1px rgba(80,10,0,.6)}
+.pin.final .seal{width:44px;height:44px;font-size:22px;color:var(--lapis-deep);text-shadow:none;
+  background:radial-gradient(circle at 34% 28%,#fff1b8 0%,var(--gold-hi) 45%,var(--gold) 100%);
+  box-shadow:0 0 0 2.5px var(--lapis-deep),0 0 16px 4px rgba(255,215,100,.85),0 4px 8px rgba(20,8,0,.6)}
+.ribbon{font-family:var(--f-serif);font-weight:700;font-size:12.5px;line-height:1.25;color:#fff;background:var(--lapis);border:1px solid var(--gold-hi);padding:2px 9px;border-radius:3px;white-space:nowrap;box-shadow:0 2px 4px rgba(20,8,0,.45)}
+.pin:hover .ribbon,.pin:focus-visible .ribbon{background:var(--verm)}
+.pin:focus-visible .seal{outline:3px solid #fff;outline-offset:3px}
+.pin.done .seal{background:radial-gradient(circle at 34% 28%,#d9d6cf 0%,#a9a59d 50%,#78746c 100%);border-color:#e7e3da;color:#f4f2ee;text-shadow:0 1px 1px rgba(0,0,0,.35);box-shadow:0 0 0 2px #6f6b64,0 3px 6px rgba(20,8,0,.45)}
+.pin.done .ribbon{background:#6f6b64;border-color:#bdb8ae;color:#f1efea}
+@media (prefers-reduced-motion:no-preference){
+  .seal{transition:transform .18s ease}
+  .pin:hover .seal,.pin:focus-visible .seal{transform:scale(1.14)}
+  .pin:not(.done):not(.final) .seal::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--flame);animation:ping 2.2s ease-out infinite;pointer-events:none}
+  @keyframes ping{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.7);opacity:0}}
+}
+@media (max-width:720px){
+  .plate{padding:3px}
+  .seal{width:25px;height:25px;font-size:12px;border-width:1.5px;box-shadow:0 0 0 1.5px var(--gold),0 0 8px 2px rgba(255,120,60,.75),0 2px 4px rgba(20,8,0,.6)}
+  .pin.final .seal{width:29px;height:29px;font-size:15px}
+  .ribbon{display:none}
+  .pin::before{content:"";position:absolute;inset:-12px}
+}
+
+/* Veritas Hall view */
+.floors{display:flex;justify-content:center;gap:8px;margin-bottom:12px}
+.floors button{all:unset;cursor:pointer;font-family:var(--f-roman);font-weight:700;letter-spacing:.08em;padding:6px 16px;border:1.5px solid var(--gold-deep);border-radius:4px;color:var(--gold-deep);background:var(--parch-hi)}
+.floors button[aria-pressed="true"]{background:var(--verm);color:var(--parch-hi);border-color:var(--verm)}
+.floors button:focus-visible{outline:2px solid var(--lapis);outline-offset:2px}
+.fp{padding:0}
+.fp svg{display:block;width:100%;height:auto}
+.fp a:hover .rm,.fp a:focus-visible .rm{fill:#ffd2a6}
+.fp-booths a.final .fb-seal{background:var(--gold-hi);color:var(--lapis-deep)}
+.fp-booths{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.fp-booths a{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--parch-hi);border:1.5px solid var(--gold);border-radius:6px;color:var(--ink);text-decoration:none;min-width:0}
+.fp-booths a:hover,.fp-booths a:focus-visible{border-color:var(--verm)}
+.fb-seal{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--flame);color:#fff8e6;font-family:var(--f-roman);font-weight:700;font-size:14px;border:2px solid #fff8e6;box-shadow:0 0 0 1.5px var(--gold)}
+.fp-booths a.done .fb-seal{background:var(--stone)}
+.fb-name{flex:1;min-width:0;font-family:var(--f-serif);font-weight:700;font-size:15px}
+.fb-room{flex:none;font-size:13px;color:var(--ink-soft)}
+.fp-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;margin:10px 0 0;padding:0;list-style:none;font-size:13px;color:var(--ink-soft)}
+.fp-legend i{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:5px;border:1px solid var(--ink-soft);border-radius:2px}
+.fp-note{text-align:center;font-size:14px;color:var(--ink-soft);margin:10px 0 0}
+.blank{aspect-ratio:1491/1055;width:100%;background:var(--parch);background-image:repeating-linear-gradient(0deg,transparent 0 39px,rgba(31,60,124,.08) 39px 40px),repeating-linear-gradient(90deg,transparent 0 39px,rgba(31,60,124,.08) 39px 40px);display:grid;place-items:center;text-align:center;padding:20px}
+.blank-in{display:flex;flex-direction:column;align-items:center;gap:6px}
+.blank-floor{font-family:var(--f-deco);font-size:clamp(40px,8vw,72px);color:var(--lapis);line-height:1}
+.blank-t{font-family:var(--f-serif);font-weight:700;font-size:18px;color:var(--ink)}
+.blank-d{font-size:14px;color:var(--ink-soft);margin:0}
+
+/* ---------- voyage list ---------- */
+.index h2{font-family:var(--f-title);font-weight:400;font-size:26px;margin:0 0 8px;color:var(--lapis-deep)}
+.stops{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0 28px;border-top:1.5px solid var(--gold)}
+.stops li{border-bottom:1px solid var(--line)}
+.stop{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:10px;padding:11px 4px;text-decoration:none;color:inherit}
+.stop:hover .s-name{color:var(--verm)}
+.stop:focus-visible{outline:2px solid var(--verm);outline-offset:2px}
+.s-num{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--flame);color:#fff;font-family:var(--f-roman);font-weight:700;font-size:13px;border:1.5px solid var(--gold)}
+.s-num.gold{background:var(--gold-hi);color:var(--lapis-deep);border-color:var(--lapis-deep)}
+.stop.done .s-num{background:var(--stone);border-color:#6f6b64}
+.s-name{font-family:var(--f-serif);font-weight:700;font-size:16px;line-height:1.3;min-width:0}
+.s-name span{display:block;font-family:var(--f-sans);font-weight:400;font-size:12.5px;color:var(--ink-soft)}
+.s-done{font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--stone);color:#fff;white-space:nowrap}
+.foot{font-family:var(--f-serif);font-size:14px;color:var(--ink-soft);text-align:center;margin:8px 0 0}
+.foot i{font-family:var(--f-italic)}
+
+/* ---------- booth page ---------- */
+.bpage{margin-left:calc(-1 * var(--gut-l));margin-right:calc(-1 * var(--gut-r))}
+.hero{position:relative;min-height:clamp(340px,56vh,540px);display:flex;flex-direction:column;justify-content:space-between;background-color:var(--lapis-deep);background-size:cover;background-position:center;color:#fff}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(14,28,62,.95) 0%,rgba(14,28,62,.55) 42%,rgba(14,28,62,.12) 75%,rgba(14,28,62,.35) 100%)}
+.hero-top,.hero-bot{position:relative;padding-left:var(--gut-l);padding-right:var(--gut-r)}
+.hero-top{padding-top:max(16px,env(safe-area-inset-top,0px));display:flex;justify-content:space-between;align-items:center;gap:10px}
+.back{display:inline-flex;align-items:center;gap:6px;padding:7px 14px 7px 12px;border-radius:999px;background:rgba(14,28,62,.6);border:1px solid rgba(242,207,107,.7);color:#fff;font-family:var(--f-serif);font-weight:700;font-size:14px;text-decoration:none;backdrop-filter:blur(4px)}
+.back:hover{background:var(--verm)}
+.back:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
+.hero-no{font-family:var(--f-roman);font-weight:700;font-size:12px;letter-spacing:.12em;padding:4px 10px;border-radius:3px;background:var(--flame);color:#fff}
+.hero-no.gold{background:var(--gold-hi);color:var(--lapis-deep)}
+.hero-no.done{background:var(--stone)}
+.hero-bot{padding-bottom:28px;max-width:860px;margin:0 auto;width:100%}
+.hero-book{font-family:var(--f-italic);font-style:italic;font-size:16px;color:var(--gold-hi)}
+.hero h2{margin:2px 0 4px;font-family:var(--f-serif);font-weight:700;font-size:clamp(32px,6vw,52px);line-height:1.15;text-wrap:balance;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.hero-en{font-family:var(--f-roman);font-size:14px;letter-spacing:.1em;color:#f0e2bf}
+.hero-cap{margin-top:14px;font-size:12px;color:rgba(255,255,255,.72);line-height:1.5}
+.hero-cap a{color:inherit}
+.folio{max-width:860px;margin:0 auto;padding:6px var(--gut-r) 0 var(--gut-l)}
+.sec-h{display:flex;align-items:center;gap:12px;margin:28px 0 14px;font-family:var(--f-serif);font-weight:700;font-size:13px;letter-spacing:.2em;color:var(--verm)}
+.sec-h::before,.sec-h::after{content:"";flex:1;border-top:1px solid var(--gold)}
+.tale{margin:0;font-size:15.5px;line-height:1.9}
+.tale::first-letter{float:left;font-family:var(--f-serif);font-weight:700;font-size:2.4em;line-height:1;padding:6px 8px;margin:4px 10px 0 0;background:var(--lapis);color:var(--gold);border:2px solid var(--gold)}
+.booth-name{font-family:var(--f-serif);font-weight:700;font-size:24px;line-height:1.35;margin:0 0 10px;color:var(--lapis-deep);text-wrap:balance}
+.booth p{margin:0 0 10px;font-size:15.5px}
+.facts{margin:16px 0 0;border:1.5px solid var(--gold);background:var(--parch-hi);display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.fact{padding:12px 16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px;min-width:0}
+.fact dt{font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--lapis)}
+.fact dd{margin:0;font-size:14.5px;min-width:0;overflow-wrap:anywhere}
+.fact.wide{grid-column:1/-1}
+.fact a.loc{color:var(--verm);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.gets{list-style:none;padding:0;margin:2px 0 0;display:flex;flex-direction:column;gap:5px}
+.gets li{position:relative;padding-left:18px;line-height:1.5}
+.gets li::before{content:"✦";position:absolute;left:0;top:0;color:var(--gold-deep);font-size:12px}
+.notice{margin:16px 0 0;padding:14px 16px;border:2px solid var(--lapis);border-radius:8px;background:var(--parch-hi);display:flex;flex-direction:column;gap:6px;font-size:14.5px}
+.notice strong{font-family:var(--f-serif);color:var(--lapis-deep);font-size:15.5px}
+.notice ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:3px}
+.stampbox{margin-top:22px;display:flex;flex-direction:column;gap:6px}
+.stamp-btn{width:100%;border-radius:10px;font-size:17px;padding:14px 16px}
+.stamp-btn.done{background:#e9e6df;color:#55524c;border:2px dashed #8d8a84;box-shadow:none}
+.stamp-note{font-size:12.5px;color:var(--ink-soft);text-align:center;margin:0}
+.lock{padding:12px 16px;border:1.5px dashed var(--gold-deep);border-radius:8px;font-size:14.5px;background:var(--parch-hi)}
+.lock b{color:var(--verm)}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:28px;padding-top:14px;border-top:1px solid var(--line)}
+.pager a{font-family:var(--f-serif);font-weight:600;font-size:14.5px;color:var(--ink-soft);text-decoration:none;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:6px 2px}
+.pager a:hover{color:var(--verm)}
+.pager a:focus-visible{outline:2px solid var(--verm)}
+.home-row{display:flex;justify-content:center;margin-top:18px}
+@media (prefers-reduced-motion:no-preference){
+  .bpage .hero-bot,.bpage .folio{animation:rise .45s ease-out}
+}
+
+/* ================= NOIR THEME =================
+   Black ground, gold hairlines, ivory type; the illuminated map is the only full-colour object. */
+:root{color-scheme:dark;
+  --parch:#0b0a09;--parch-hi:#15130f;--ink:#ece3cf;--ink-soft:#a0957f;--line:rgba(201,164,92,.2);
+  --gold:#c9a45c;--gold-hi:#ecd28f;--gold-deep:#8d7036;--hot:#ff7d5a}
+html{background:#0b0a09}
+body{background:#0b0a09;background-image:radial-gradient(ellipse 90% 60% at 50% -8%,rgba(201,164,92,.13),transparent 65%),radial-gradient(ellipse 60% 40% at 50% 108%,rgba(163,48,30,.10),transparent 70%)}
+a{color:var(--hot)}
+::selection{background:rgba(201,164,92,.35)}
+.band{height:7px;background:none;border-block:1px solid rgba(201,164,92,.6);position:relative}
+.band::after{content:"";position:absolute;left:50%;top:50%;width:7px;height:7px;background:var(--gold);transform:translate(-50%,-50%) rotate(45deg);box-shadow:0 0 0 3px #0b0a09}
+
+.gate{background:linear-gradient(rgba(6,5,4,.8),rgba(6,5,4,.92)),url("map.jpg") center/cover no-repeat,#000}
+.gate-card{background:linear-gradient(#17140f,#100e0b);border:1px solid var(--gold);outline:1px solid rgba(201,164,92,.35);outline-offset:5px;box-shadow:0 40px 80px -30px #000}
+.gate-eyebrow{color:var(--gold)}
+.gate h2{color:var(--gold-hi)}
+.gate-rules{border:1px solid rgba(201,164,92,.35);background:rgba(255,255,255,.02)}
+.gate-rules li::before,.rules li::before{color:var(--gold)}
+
+.btn{background:linear-gradient(#e2c27a,#b88f45);color:#120f0a;border:1px solid var(--gold-hi);box-shadow:0 8px 24px -10px rgba(201,164,92,.6)}
+.btn:hover{background:linear-gradient(#f0d590,#c99f52)}
+.btn:focus-visible{outline:2px solid var(--gold-hi)}
+
+h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,143,.18)}
+.sub{color:var(--gold);letter-spacing:.3em}
+.switch{background:rgba(255,255,255,.02);border:1px solid rgba(201,164,92,.6);box-shadow:none}
+.switch button{color:var(--ink-soft)}
+.switch button[aria-pressed="true"]{background:var(--gold);color:#120f0a;box-shadow:none}
+.switch button:focus-visible{outline-color:var(--gold-hi)}
+
+.t-status{color:var(--ink)}
+.t-status b{color:var(--hot)}
+.cell{border-color:rgba(201,164,92,.45)}
+.cell.on{border-color:var(--flame)}
+.cell.goal{box-shadow:0 0 0 2px #0b0a09,0 0 0 3px var(--gold-hi)}
+.t-marks .m7{color:var(--gold-hi)}
+
+.plate{border:1px solid var(--gold);padding:7px;background:#000;box-shadow:0 40px 80px -40px #000,0 0 60px -20px rgba(201,164,92,.18)}
+.plate-in{border:1px solid rgba(201,164,92,.45)}
+.arrows .under{stroke:#f6ead0}
+.arrows .head-u{fill:#f6ead0;stroke:#f6ead0}
+.ribbon{background:rgba(10,9,8,.88);border-color:var(--gold);color:#f3ead6}
+.pin:hover .ribbon,.pin:focus-visible .ribbon{background:var(--verm)}
+.pin.final .seal{color:#120f0a}
+
+.floors button{background:transparent;color:var(--gold);border:1px solid rgba(201,164,92,.6)}
+.floors button[aria-pressed="true"]{background:var(--gold);color:#120f0a;border-color:var(--gold)}
+.fp{background:#000;padding:0}
+.fp a:hover .rm,.fp a:focus-visible .rm{fill:rgba(232,64,31,.3)}
+.fp-booths a{background:#15130f;border:1px solid rgba(201,164,92,.35)}
+.fp-booths a:hover,.fp-booths a:focus-visible{border-color:var(--gold-hi)}
+.fb-seal{border-color:#15130f}
+.fp-booths a.final .fb-seal{color:#120f0a}
+.fp-legend i{border-color:#6a5f4c}
+
+.index h2{color:var(--gold-hi)}
+.stops{border-top-color:rgba(201,164,92,.6)}
+.stop:hover .s-name{color:var(--gold-hi)}
+.s-num{border-color:rgba(255,255,255,.35)}
+.s-num.gold{color:#120f0a;border-color:var(--gold-deep)}
+.s-done{background:#3a3631;color:#d9d3c7}
+.foot{color:var(--gold)}
+
+.hero{background-color:#000}
+.hero::before{background:linear-gradient(to top,#0b0a09 0%,rgba(11,10,9,.7) 30%,rgba(11,10,9,.15) 68%,rgba(0,0,0,.45) 100%)}
+.back{background:rgba(0,0,0,.5);border-color:rgba(201,164,92,.7)}
+.back:hover{background:var(--gold);color:#120f0a}
+.hero-no.gold{color:#120f0a}
+.hero-en{color:var(--gold-hi)}
+.sec-h{color:var(--gold)}
+.sec-h::before,.sec-h::after{border-top-color:rgba(201,164,92,.4)}
+.booth-name{color:var(--gold-hi)}
+.facts{background:#15130f;border:1px solid rgba(201,164,92,.4)}
+.fact dt{color:var(--gold)}
+.fact a.loc{color:var(--hot)}
+.gets li::before{color:var(--gold)}
+.notice{background:#15130f;border:1px solid var(--gold)}
+.notice strong{color:var(--gold-hi)}
+.stamp-btn.done{background:transparent;color:var(--ink-soft);border:1px dashed #6f6b64;box-shadow:none}
+.lock{background:#15130f;border-color:rgba(201,164,92,.45)}
+.lock b{color:var(--hot)}
+.pager a:hover{color:var(--gold-hi)}
+
+/* antique survey-plan look for Jinrigwan A */
+.fp .ap-ink{fill:none;stroke:#3a2614;stroke-linejoin:round}
+.fp text{font-family:var(--f-sans);font-weight:700;text-anchor:middle;dominant-baseline:central;pointer-events:none;fill:#3a2614}
+.fp text.num{font-family:var(--f-roman);font-weight:700}
+.fp text.sm{font-weight:500;fill:#6a4f33}
+.fp text.wct{fill:#2e4a78}
+.fp text.open{font-family:var(--f-italic);font-style:italic;font-weight:400;fill:#7a6040}
+.fp text.bname{font-family:var(--f-serif);font-weight:700;fill:#8f2a17}
+.fp text.seal-t{font-family:var(--f-roman);fill:#fbf1da}
+.fp text.ttl{font-family:var(--f-serif);font-weight:700;fill:#3a2614}
+.fp text.ttl-en{font-family:var(--f-roman);font-weight:500;letter-spacing:.3em;fill:#6a4f33}
+.fp .hit{fill:transparent;stroke:none;pointer-events:all;cursor:pointer}
+.fp a:hover .hit,.fp a:focus-visible .hit{fill:rgba(163,48,30,.14)}
+.fp a:focus-visible{outline:none}
+.fp a:focus-visible .hit{stroke:#8f2a17;stroke-width:3;stroke-dasharray:8 5}
+</style>
+
+<!-- welcome gate -->
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="gate-card">
+    <div class="band" aria-hidden="true"></div>
+    <div class="gate-body">
+      <div class="gate-eyebrow">The Return to Ithaca</div>
+      <h2 id="gateTitle">환영합니다, 선원 여러분</h2>
+      <p>트로이 전쟁이 끝났습니다. 오디세우스의 배에 오른 선원이 되어 아홉 개의 섬을 지나 고향 이타카로 돌아가세요.</p>
+      <ul class="gate-rules">
+        <li>섬마다 부스가 있어요. 아홉 곳 모두 들르는 걸 권장해요.</li>
+        <li>도장 <b>7개</b>를 모으면 이타카에서 활을 쏠 자격이 생겨요.</li>
+        <li>7개를 채운 도장판을 사진 찍어 <b>출석 구글폼</b>에 올려야 출석이 인정돼요.</li>
+      </ul>
+      <button class="btn" id="enter">승선하기</button>
+    </div>
+    <div class="band" aria-hidden="true"></div>
+  </div>
+</div>
+
+<!-- map page -->
+<div id="mapPage">
+  <div class="band" aria-hidden="true"></div>
+  <div class="wrap">
+    <header class="head">
+      <h1>이타카로의 귀환</h1>
+      <div class="sub">The Return to Ithaca</div>
+    </header>
+
+    <div class="switch" role="group" aria-label="지도 선택">
+      <button id="vOdyssey" aria-pressed="true">항해도</button>
+      <button id="vVeritas" aria-pressed="false">진리관A</button>
+    </div>
+
+    <div class="track" aria-live="polite">
+      <div class="t-status" id="tStatus"></div>
+      <div class="t-cells" id="tCells"></div>
+      <div class="t-marks"><span class="m7">7 · 이타카 자격</span><span class="m9">9 · 완주</span></div>
+    </div>
+    <ul class="rules">
+      <li>9개 모두 도는 걸 권장</li>
+      <li>7개면 이타카 활쏘기 자격</li>
+      <li>7개 채운 도장판 사진을 출석 폼에 올리면 출석 인정</li>
+    </ul>
+
+    <section id="odysseyView" aria-label="항해도">
+      <div class="plate"><div class="plate-in">
+        <div class="stage" id="stage">
+          <img src="map.jpg" alt="오디세우스의 항해를 그린 채색 필사본 양식의 지중해 지도" draggable="false">
+          <svg class="arrows" id="arrows" viewBox="0 0 100 70.76" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </div>
+      </div></div>
+    </section>
+
+    <section id="veritasView" aria-label="진리관A 지도" hidden>
+      <div class="floors" role="group" aria-label="층 선택">
+        <button data-floor="3" aria-pressed="true">3F</button>
+        <button data-floor="4" aria-pressed="false">4F</button>
+      </div>
+      <div class="plate"><div class="plate-in">
+        <div class="fp"><svg id="fpSvg" role="img" aria-label="진리관A 3층 도면"></svg></div>
+      </div></div>
+      <ul class="fp-legend" aria-hidden="true">
+        <li><i style="background:#f3e6c6"></i>강의실</li>
+        <li><i style="background:#cfd3d4;border-color:#2e4a78"></i>화장실</li>
+        <li><i style="background:repeating-linear-gradient(90deg,#e9d6ab 0 3px,#3a2614 3px 4px)"></i>계단</li>
+        <li><i style="background:#c9b48a"></i>엘리베이터</li>
+        <li><i style="background:repeating-linear-gradient(45deg,#e9d6ab 0 4px,#6a4f33 4px 5px)"></i>트인 공간</li>
+      </ul>
+      <ul class="fp-booths" id="fpBooths"></ul>
+      <p class="fp-note" id="fpNote"></p>
+    </section>
+
+    <section class="index" aria-labelledby="idx-h">
+      <h2 id="idx-h">항해 순서</h2>
+      <ol class="stops" id="stops"></ol>
+    </section>
+
+    <p class="foot"><i>“Ἄνδρα μοι ἔννεπε, Μοῦσα, πολύτροπον…”</i></p>
+  </div>
+  <div class="band" aria-hidden="true" style="margin-top:24px"></div>
+</div>
+
+<!-- booth page (filled per booth) -->
+<article class="bpage" id="boothPage" hidden aria-labelledby="bTitle"></article>
+
+<script>
+/* x,y = seal position on the illuminated chart (% of width/height). Order = story order. */
+const PLACES = [
+{ id:"lotus", name:"로토파고스", en:"Land of the Lotus-Eaters", book:"제9권", x:8.6, y:66.5, tag:"1",
+  photo:{cap:"라오스 돈뎃의 연꽃 연못", by:"Basile Morin", lic:"CC BY-SA 4.0"},
+  tale:"트로이를 떠난 오디세우스의 함대는 아흐레 동안 폭풍에 떠밀린 끝에 로토파고스족의 땅에 닿았다. 그곳 사람들은 정찰대를 해치지 않고 달콤한 연꽃 열매를 나눠 주었는데, 그것을 먹은 선원들은 고향 생각을 잊고 그 땅에 남겠다고 했다. 오디세우스는 울며 버티는 그들을 억지로 배로 끌고 와 노 젓는 자리 밑에 묶은 뒤, 다른 선원들이 열매를 맛보기 전에 서둘러 떠났다.",
+  booth:{ title:"망각의 연꽃",
+    about:"달콤한 연꽃을 먹은 동료 선원들이 고향으로 가는 길을 잊어 가고 있어요. 테이블 위에 펼쳐진 그림 카드(키클롭스의 섬, 세이렌의 바다, 고향 이타카…)를 <b>20초</b> 동안 눈에 담아 두세요. 카드가 가려지면 RA가 몇 장이었는지, 어디에 있었는지, 정말 있었는지를 묻는 질문 세 개를 냅니다. 두 문제 이상 맞히면 동료들이 정신을 차려요. 기억이 흐릿해져도 다시 볼 기회가 있으니 걱정하지 마세요.",
+    who:"개인", gets:["부스 도장"] } },
+
+{ id:"cyclops", name:"키클롭스의 섬", en:"Island of the Cyclopes", book:"제9권", x:47.6, y:46, tag:"3",
+  photo:{cap:"사르데냐 부에 마리노 해식 동굴", by:"delaere", lic:"CC BY 2.0"},
+  tale:"오디세우스는 열두 명의 선원과 함께 외눈박이 거인 폴리페모스의 동굴에 들어갔다가 갇혔다. 거인은 입구를 거대한 바위로 막고 끼니마다 선원을 둘씩 잡아먹었다. 오디세우스는 독한 포도주로 거인을 취하게 하고 자기 이름을 ‘아무도 아니(Outis)’라고 댔다. 거인이 잠들자 불에 달군 올리브 나무 말뚝으로 눈을 찔렀고, 비명을 듣고 온 이웃 거인들은 “아무도 아닌 자가 나를 해친다”는 말에 그냥 돌아갔다. 일행은 숫양의 배 밑에 매달려 동굴을 빠져나왔다. 그런데 배에 오른 오디세우스가 진짜 이름을 외치는 바람에, 폴리페모스는 아버지 포세이돈에게 복수를 빌었다. 이 저주가 10년 방랑의 시작이 되었다.",
+  booth:{ title:"폴리페모스 과녁 맞히기",
+    about:"동굴에 들어서는 순간부터 여러분의 이름은 <b>‘아무도 아니’</b>예요. 거인에게 본명을 들키면 안 되니까요. 박쿠스의 와인에 취해 잠든 폴리페모스가 깨어나기 전에 다트로 그의 외눈을 노리세요. 눈동자는 5점, 눈꺼풀은 3점, 얼굴은 1점. 눈동자 한가운데를 맞히면 거인의 비명과 함께 점수와 상관없이 바로 탈출 성공입니다. 개인전은 3발, 팀전은 한 사람당 1발씩 이어 던지고, 개인전·3인조는 7점, 4인조는 9점을 넘기면 탈출! 탈출하고 나면 포세이돈의 폭풍이 여러분을 키르케의 섬으로 데려갑니다.",
+    who:"개인전 또는 3~4인 팀전", time:"개인전 약 1분 · 팀전 약 2분", gets:["부스 도장"] } },
+
+{ id:"laestrygonians", name:"라이스트뤼고네스", en:"Laestrygonians", book:"제10권", x:42.6, y:61.5, tag:"2",
+  photo:{cap:"코르시카 보니파시오 절벽, 라이스트뤼고네스의 항구로 전해지는 곳", by:"JopkeB", lic:"CC BY-SA 4.0"},
+  tale:"바람의 신 아이올로스가 거친 바람을 담아 준 가죽 자루를 선원들이 열어 버려, 이타카를 눈앞에 두고 다시 먼바다로 밀려났다. 이레를 항해해 닿은 텔레필로스는 높은 절벽에 둘러싸인 잔잔한 항구였다. 다른 배들은 모두 항구 안쪽에 정박했지만 오디세우스만 바깥 바위에 배를 묶었다. 이 땅의 주인은 식인 거인 라이스트뤼고네스족이었다. 거인들은 절벽 위에서 바위를 던져 배를 부수고 선원들을 물고기처럼 꿰어 갔다. 열두 척 가운데 오디세우스의 배 한 척만 살아남았다.",
+  booth:{ title:"거인족의 습격",
+    about:"절벽 위 거인들이 함대를 향해 바위를 던지기 시작했어요! 첫 라운드에서는 거인이 그려진 컵을 향해 종이공 세 개를 던져 두 번 이상 맞히면 함대를 지켜 냅니다. 두 번째 라운드에서는 마지막 남은 배(탁구공)를 에어펌프 바람으로 밀어 장애물과 함정을 피해 <b>30~40초</b> 안에 항구까지 탈출시키세요. 한 번에 안 돼도 괜찮아요. 거인들도 가끔은 봐줍니다.",
+    who:"개인", gets:["부스 도장"] } },
+
+{ id:"aiaia", name:"아이아이에 섬", en:"Aeaea · Circe's Isle", book:"제10–12권", x:9.5, y:37, tag:"4",
+  photo:{cap:"이탈리아 몬테 치르체오, 키르케의 섬으로 전해지는 곳", by:"Deblu68", lic:"Public domain"},
+  tale:"마녀 키르케의 섬. 숲속 저택으로 간 정찰대는 키르케가 건넨 음료를 마시고 돼지로 변했다. 오디세우스는 헤르메스가 준 약초 ‘몰리’ 덕분에 마법을 이겨 내고 부하들을 원래 모습으로 되돌렸다. 일행은 그곳에서 1년을 머문 뒤, 키르케의 말에 따라 세상 끝의 저승으로 가 예언자 테이레시아스에게 귀향길을 물었다. 저승에서 오디세우스는 어머니 안티클레이아와 아가멤논, 아킬레우스의 망령을 만났다. 돌아온 뒤에는 키르케의 지붕에서 떨어져 죽은 선원 엘페노르의 장례를 치러 주었다.",
+  booth:{ title:"망자 맞히기 · 키르케의 저승 물약",
+    about:"“저승의 망자들을 알아보지 못한다면 돼지가 될 것이다!” 키르케의 경고와 함께 저승의 망자 일곱 명에 대한 힌트를 <b>30초</b> 동안 외우세요. 테이블에 엎어진 이름 카드들 앞에서 RA가 힌트를 읽으면, <b>7초</b> 안에 그 망자의 카드를 손으로 짚어야 합니다. 세 문제 중 두 문제를 맞히면 성공. 실패하면 마법에 걸려 돼지 머리띠를 쓰고 “꿀꿀!”을 외쳐야 하지만, 그래도 도장은 받을 수 있어요.",
+    who:"3인 1조", gets:["부스 도장","실패하면 돼지 변신 체험"] } },
+
+{ id:"sirens", name:"세이렌의 바다", en:"Isle of the Sirens", book:"제12권", x:25.6, y:55, tag:"5",
+  photo:{cap:"아말피 해안의 리 갈리 섬, 세이렌의 섬으로 전해지는 곳", by:"Gianfranco Vitolo", lic:"CC BY 2.0"},
+  tale:"세이렌은 노래로 뱃사람을 홀려 섬으로 끌어들이는 존재였고, 그 섬 둘레에는 죽은 자들의 뼈가 쌓여 있었다. 키르케의 조언대로 오디세우스는 선원들의 귀를 밀랍으로 막고, 자신은 노래를 듣기 위해 돛대에 몸을 묶게 했다. 세이렌이 세상 모든 것을 알려 주겠다며 그를 부르자 오디세우스는 풀어 달라고 몸부림쳤지만, 선원들은 밧줄을 더 단단히 조이고 노를 저어 섬을 지나쳤다.",
+  booth:{ title:"세이렌의 유혹",
+    about:"세이렌의 노래에 홀리지 않고 음악 게임을 통과하는 A팀 대 B팀 대결이에요. 세 가지 게임 중 하나를 하게 됩니다. <b>고요 속의 외침</b>은 헤드셋으로 음악을 크게 듣는 팀원에게 입 모양만으로 노래 제목이나 가사를 전하는 게임, <b>번역 노래 맞히기</b>는 번역기를 거쳐 어색해진 제목과 가사를 보고 원곡을 맞히는 게임, <b>역재생 노래 맞히기</b>는 거꾸로 재생한 후렴을 듣고 노래를 맞히는 게임이에요. 최신곡부터 10년 넘은 명곡까지 나오니 귀를 활짝 여세요.",
+    who:"두 팀 대항전", time:"게임당 약 2~3분", gets:["우승팀 하리보 젤리","부스 도장"] } },
+
+{ id:"scylla", name:"스퀼라와 카륍디스", en:"Scylla & Charybdis", book:"제12권", x:60.2, y:52.5, tag:"6",
+  photo:{cap:"스킬라 마을에서 바라본 메시나 해협", by:"Marco Vinci", lic:"CC BY-SA 3.0"},
+  tale:"좁은 해협의 한쪽 절벽에는 머리 여섯 달린 괴물 스퀼라가, 맞은편에는 하루 세 번 바닷물을 삼켰다 뱉는 소용돌이 카륍디스가 있었다. 키르케는 배 전체를 잃느니 여섯 명을 잃는 편이 낫다며 스퀼라 쪽으로 붙으라고 했다. 오디세우스는 선원들이 겁먹을까 봐 스퀼라 이야기를 숨긴 채 무장하고 나섰지만, 스퀼라는 여섯 명을 낚아채 갔다. 훗날 배가 부서진 뒤 홀로 카륍디스로 다시 떠밀려 온 오디세우스는 절벽의 무화과나무에 매달려 버티다, 소용돌이가 뱉어 낸 돛대와 용골을 타고 살아남았다.",
+  booth:{ title:"스퀼라와 카륍디스의 해협",
+    about:"오디세우스의 선원이 되어 항해의 갈림길마다 함께 선택을 내립니다. 두 팀이 같은 상황을 받고, 상의한 뒤 “하나, 둘, 셋!”에 A와 B 중 하나를 동시에 들어요. 확실히 조금 잃을지, 동전 던지기와 미션(퀴즈, 한마음, 한 발 버티기, 포커칩 던지기)에 걸어 볼지는 팀의 몫이에요. 선원을 뜻하는 토큰 10개로 출발해 다섯 라운드 뒤 더 많이 남긴 팀이 이기고, <b>우승팀에는 상품으로 빈츠</b>를 드려요. 결과가 공개되면 오디세우스는 실제로 어떻게 했는지도 들려줘요. 위기의 순간에는 아테나의 가호가 한 번 여러분을 지켜 줍니다.",
+    who:"두 팀 대항전", gets:["우승팀 상품: 빈츠","부스 도장"] } },
+
+{ id:"thrinacia", name:"트리나키아", en:"Thrinacia · Cattle of Helios", book:"제12권", x:21.4, y:68, tag:"7",
+  photo:{cap:"시칠리아 라구사 들판의 소들. 트리나키아는 시칠리아로 여겨져요", by:"Savvo90", lic:"Public domain"},
+  tale:"태양신 헬리오스의 신성한 소들이 풀을 뜯는 섬. 테이레시아스와 키르케 모두 그 소를 건드리지 말라고 경고했다. 그러나 역풍이 한 달 동안 그치지 않아 식량이 바닥났고, 오디세우스가 기도하러 자리를 비운 사이 에우릴로코스가 선원들을 설득해 소를 잡았다. 헬리오스의 호소를 들은 제우스는 바다로 나선 배에 벼락을 내려 부쉈고, 오디세우스 혼자만 살아남았다.",
+  booth:{ title:"누가 태양신의 소를 먹었는가?",
+    about:"오디세우스가 기도하러 간 사이 누군가 태양신의 소를 잡아먹었어요! 카드를 한 장씩 뽑으면 선원들은 모두 같은 제시어를 받지만, 범인 <b>에우릴로코스</b>만은 제시어 대신 소 그림을 받습니다. 돌아가며 제시어를 한 문장씩 설명하고, <b>2분</b> 동안 토론한 뒤 “하나, 둘, 셋!”에 범인을 동시에 지목하세요. 선원이라면 정답을 흘리지 않으면서 진짜임을 보여야 하고, 에우릴로코스라면 눈치껏 거짓말을 섞어 끝까지 숨어야 해요.",
+    who:"6명 (2팀)", gets:["미니 크런키 초콜릿: 선원이 이기면 1개씩, 에우릴로코스가 이기면 몰아주기","부스 도장"] } },
+
+{ id:"ogygia", name:"오기기아", en:"Ogygia · Calypso's Isle", book:"제5·7권", x:84.6, y:51, tag:"8",
+  photo:{cap:"몰타 고조섬 람라 만, 칼립소의 동굴이 있다고 전해지는 곳", by:"Zefram", lic:"CC BY 2.0 de"},
+  tale:"아흐레를 표류한 오디세우스는 님프 칼립소의 섬 오기기아에 닿았다. 칼립소는 그를 7년 동안 붙잡아 두며 늙지도 죽지도 않는 몸을 주겠다고 했다. 오디세우스는 그 제안을 거절하고 날마다 바닷가에 앉아 고향을 그리며 울었다. 아테나의 청으로 제우스가 헤르메스를 보내 그를 놓아주라고 명하자, 칼립소는 뗏목 만드는 일을 도와 그를 떠나보냈다.",
+  booth:{ title:"칼립소의 카페",
+    about:"“어서 와요, 오디세우스. 코코아 한 잔 하고 가요. 아, 집에 가고 싶다고요? 7년째 같은 얘기를 하시네요…” 칼립소의 카페에서 따뜻한 음료와 쿠키로 잠시 쉬어 가세요. 떠나기 전에 <b>이타카에 돌아가서 이루고 싶은 소원</b>을 쪽지에 적어 칼립소에게 건네면, 헤르메스의 칙령에 따라 귀향을 허락받고 탈출 허가증 도장을 받습니다. <b>출석 구글폼 QR</b>도 여기서 안내해요.",
+    who:"개인", gets:["핫초코, 보이차, 아메리카노 중 1잔","로투스 쿠키","탈출 허가증 도장"],
+    attend:true } },
+
+{ id:"scheria", name:"스케리아", en:"Scheria · Phaeacians", book:"제6–8·13권", x:57.9, y:30.5, tag:"9",
+  photo:{cap:"코르푸 팔레오카스트리차 해변. 코르푸는 스케리아로 여겨져요", by:"Marc Ryckaert (MJJR)", lic:"CC BY 3.0"},
+  tale:"포세이돈의 폭풍에 뗏목이 부서진 뒤, 오디세우스는 바다 여신 이노의 베일 덕분에 파이아키아족의 섬 스케리아 해안에 닿았다. 강가에서 공주 나우시카를 만나 궁전으로 안내받았고, 알키노오스 왕의 연회에서 음유시인 데모도코스가 트로이 목마 이야기를 노래하자 눈물을 흘렸다. 정체를 밝힌 오디세우스는 트로이를 떠난 뒤 자신이 겪은 모든 방랑을 밤새 들려주었다. 감동한 파이아키아인들은 선물을 가득 실은 배로 그를 이타카까지 데려다주었다.",
+  booth:{ title:"파이아키아의 연회: 오디세우스의 썰 풀기",
+    about:"알키노오스 왕의 연회에서 오디세우스가 고생담을 풀어놓자 사람들은 감동해 보물을 쏟아 주었어요. 이번엔 여러분 차례입니다. 촛불이 켜진 어두운 연회장에 둘러앉아 상자에서 질문을 하나씩 뽑고, ‘내 인생 가장 억울했던 순간’, ‘돈 날린 썰’, ‘진짜 운 좋았던 썰’ 같은 이야기를 풀어놓으세요. 다 듣고 나면 가장 인상 깊었던 이야기꾼에게 보석 초콜릿을 건네고, 다 함께 “고생했다!”를 외치며 연회를 마칩니다.",
+    who:"6명 (두 팀이 한 조)", time:"1인당 최대 5분", gets:["보석 초콜릿","부스 도장"] } },
+
+{ id:"ithaca", name:"이타카", en:"Ithaca · Home", book:"제13–23권", x:93.4, y:48.5, tag:"Ω", final:true,
+  photo:{cap:"이타카 섬 바티 항구", by:"Wikimedia Commons", lic:"CC BY-SA 2.0"},
+  tale:"20년 만에 돌아온 고향. 궁전은 페넬로페에게 청혼하는 구혼자들이 차지한 채 재산을 탕진하고 있었다. 아테나는 오디세우스를 늙은 거지로 변장시켰고, 그는 돼지치기 에우마이오스의 오두막에서 아들 텔레마코스와 재회했다. 페넬로페가 남편의 활로 열두 개 도끼 구멍을 꿰뚫는 사람과 결혼하겠다고 하자 구혼자 누구도 시위조차 얹지 못했고, 거지 차림의 오디세우스만 성공했다. 그는 구혼자들을 처단했고, 신중한 페넬로페는 올리브 나무 침대의 비밀을 물어 그가 진짜 남편임을 확인했다.",
+  booth:{ title:"이타카로의 귀환", final:true,
+    about:"아홉 섬을 지나온 선원들의 마지막 목적지예요. <b>Nostoi</b>에서는 활로 과녁에 다섯 발을 쏘아 합산 점수로 순위를 겨룹니다. 1~5위가 대강의실 앞 화면에 실시간으로 뜨고, 줄 맨 뒤로 다시 서면 몇 번이든 재도전할 수 있어요. 활동이 끝났을 때 상위 4명이 상품을 받습니다. <b>페넬로페의 질문</b>에서는 남편을 쉽게 믿지 않는 페넬로페처럼, 화면의 QR코드로 오디세이아 퀴즈를 풀어 정체를 증명하세요. 일정 점수를 넘기면 RA에게 확인받고 간식을 받아 갑니다.",
+    who:"개인 · 활쏘기는 도장 7개 이상", gets:["1등 무선 헤드셋","2등 보조배터리","3·4등 『오뒷세이아』 책","퀴즈 통과 시 미니 프레첼"],
+    attend:true } }
+];
+const NEED=7, BOOTHS=PLACES.filter(p=>!p.final), TOTAL=BOOTHS.length;
+const ROMAN=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+const $=id=>document.getElementById(id);
+
+/* ---- stamps (saved only in this browser) ---- */
+const KEY='odyssey-stamps-v1';
+let stamps=new Set();
+try{stamps=new Set(JSON.parse(localStorage.getItem(KEY)||'[]'));}catch(e){}
+const count=()=>BOOTHS.filter(p=>stamps.has(p.id)).length;
+function saveStamps(){try{localStorage.setItem(KEY,JSON.stringify([...stamps]));}catch(e){}}
+function toggleStamp(id){stamps.has(id)?stamps.delete(id):stamps.add(id);saveStamps();renderStamps();if(pageId)renderStampBox();}
+function statusText(n){
+  if(n>=TOTAL) return `도장 <b>${n}</b> / ${TOTAL} · 아홉 섬 완주! 이타카로 돌아가세요`;
+  if(n>=NEED) return `도장 <b>${n}</b> / ${TOTAL} · 이타카 활쏘기 자격 획득! 완주까지 ${TOTAL-n}개`;
+  return `도장 <b>${n}</b> / ${TOTAL} · 이타카 자격까지 ${NEED-n}개`;
+}
+function renderStamps(){
+  const n=count();
+  $('tStatus').innerHTML=statusText(n);
+  $('tCells').innerHTML=Array.from({length:TOTAL},(_,i)=>`<span class="cell${i<n?' on':''}${i===NEED-1?' goal':''}"></span>`).join('');
+  document.querySelectorAll('.pin').forEach(b=>b.classList.toggle('done',stamps.has(b.dataset.id)));
+  document.querySelectorAll('.stop').forEach(a=>{const d=stamps.has(a.dataset.id);a.classList.toggle('done',d);a.querySelector('.s-done').hidden=!d;});
+}
+
+/* ---- story-order arrows ---- */
+(function(){
+  const s=$('arrows'), H=70.76/100, NS='http://www.w3.org/2000/svg';
+  const pts=PLACES.map(p=>[p.x,p.y*H]);
+  const add=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);s.appendChild(e);return e;};
+  const segs=[];
+  for(let i=0;i<pts.length-1;i++){
+    const [x1,y1]=pts[i],[x2,y2]=pts[i+1];
+    const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+    const bend=(i%2?1:-1)*Math.min(L*.22,7);
+    const mx=(x1+x2)/2-uy*bend,my=(y1+y2)/2+ux*bend;
+    const trim=(px,py,d)=>{const vx=mx-px,vy=my-py,l=Math.hypot(vx,vy);return[px+vx/l*d,py+vy/l*d];};
+    const a=trim(x1,y1,3.4), b=trim(x2,y2,4.4);
+    const d=`M${a[0].toFixed(2)},${a[1].toFixed(2)} Q${mx.toFixed(2)},${my.toFixed(2)} ${b[0].toFixed(2)},${b[1].toFixed(2)}`;
+    const tx=b[0]-mx,ty=b[1]-my,tl=Math.hypot(tx,ty),hx=tx/tl,hy=ty/tl,sz=1.5;
+    const tip=[b[0]+hx*1.2,b[1]+hy*1.2];
+    const head=`${tip[0]},${tip[1]} ${tip[0]-hx*sz*1.6-hy*sz},${tip[1]-hy*sz*1.6+hx*sz} ${tip[0]-hx*sz*1.6+hy*sz},${tip[1]-hy*sz*1.6-hx*sz}`;
+    segs.push({d,head});
+  }
+  segs.forEach(g=>{add('path',{d:g.d,class:'under'});add('polygon',{points:g.head,class:'head-u'});});
+  segs.forEach(g=>{add('path',{d:g.d,class:'over'});add('polygon',{points:g.head,class:'head-o'});});
+})();
+
+/* ---- pins + list ---- */
+PLACES.forEach(p=>{
+  const b=document.createElement('a');
+  b.className='pin'+(p.final?' final':''); b.href='#'+p.id;
+  b.style.left=p.x+'%'; b.style.top=p.y+'%'; b.dataset.id=p.id;
+  b.setAttribute('aria-label',`${p.name}, ${p.final?'최종 부스':'부스 '+p.tag}`);
+  b.innerHTML=`<span class="seal">${p.tag}</span><span class="ribbon">${p.name}</span>`;
+  $('stage').appendChild(b);
+  const li=document.createElement('li');
+  li.innerHTML=`<a class="stop" href="#${p.id}" data-id="${p.id}"><span class="s-num${p.final?' gold':''}">${p.tag}</span><span class="s-name">${p.name}<span>${p.booth.title}</span></span><span class="s-done" hidden>도장 완료</span></a>`;
+  $('stops').appendChild(li);
+});
+
+/* ---- booth page ---- */
+let pageId=null, mapScrollY=0;
+const ATTEND=`<div class="notice"><strong>출석 인증 방법</strong><ol><li>부스를 돌며 도장판에 도장을 <b>7개 이상</b> 모아요. (9개 모두 권장)</li><li>도장판을 사진으로 찍어요.</li><li>출석 구글폼에 사진을 올리면 출석이 인정돼요.</li></ol></div>`;
+function factsHTML(b,id){
+  const rows=[];
+  const rs=roomsOf(id);
+  if(rs.length) rows.push(`<div class="fact"><dt>위치</dt><dd><a href="#veritas-${rs[0][0]}" class="loc">진리관A ${rs.map(r=>r+'호').join(' · ')}</a></dd></div>`);
+  if(b.who) rows.push(`<div class="fact"><dt>인원</dt><dd>${b.who}</dd></div>`);
+  if(b.time) rows.push(`<div class="fact"><dt>소요 시간</dt><dd>${b.time}</dd></div>`);
+  if(b.gets) rows.push(`<div class="fact wide"><dt>얻을 수 있는 것</dt><dd><ul class="gets">${b.gets.map(g=>`<li>${g}</li>`).join('')}</ul></dd></div>`);
+  return `<dl class="facts">${rows.join('')}</dl>`;
+}
+function renderStampBox(){
+  const p=PLACES.find(q=>q.id===pageId), el=$('stampBox'); if(!el||!p)return;
+  const n=count();
+  if(p.final){
+    el.innerHTML=n>=NEED?`<div class="lock"><b>활쏘기 자격이 있어요!</b> 지금까지 도장 ${n}개를 체크했어요. 실제 도장판을 RA에게 보여 주세요.</div>`:`<div class="lock">지금까지 체크한 도장 <b>${n}개</b>. 활쏘기 자격까지 <b>${NEED-n}개</b> 더 필요해요.</div>`;
+    return;
+  }
+  const done=stamps.has(p.id);
+  el.innerHTML=`<button class="btn stamp-btn${done?' done':''}" id="stampBtn">${done?'도장 받음 · 취소하려면 누르기':'이 부스 도장 받았어요'}</button><p class="stamp-note">${statusText(n).replace(/<[^>]+>/g,'')}<br>이 체크는 내 휴대폰에만 저장되는 기록이에요. 출석 인증은 실제 도장판 사진으로 해요.</p>`;
+  $('stampBtn').addEventListener('click',()=>{toggleStamp(p.id);const hn=document.querySelector('.hero-no');if(hn)hn.classList.toggle('done',stamps.has(p.id));});
+}
+function showBooth(id){
+  const i=PLACES.findIndex(p=>p.id===id); if(i<0)return showMap();
+  if(pageId===null)mapScrollY=window.scrollY;
+  const p=PLACES[i], b=p.booth, prev=PLACES[i-1], next=PLACES[i+1];
+  pageId=id;
+  const no=p.final?'FINAL BOOTH':'BOOTH '+p.tag;
+  $('boothPage').innerHTML=`
+  <header class="hero" style="background-image:url('photos/${p.id}.jpg')">
+    <div class="hero-top"><a class="back" href="#map">← 항해도</a><span class="hero-no${p.final?' gold':''}${stamps.has(p.id)?' done':''}">${no}</span></div>
+    <div class="hero-bot">
+      <div class="hero-book">${ROMAN[i]} · ${p.book}</div>
+      <h2 id="bTitle">${p.name}</h2>
+      <div class="hero-en">${p.en}</div>
+      <div class="hero-cap">사진: ${p.photo.cap} · ${p.photo.by} · ${p.photo.lic} · Wikimedia Commons</div>
+    </div>
+  </header>
+  <div class="band" aria-hidden="true"></div>
+  <div class="folio">
+    <div class="sec-h">이야기</div>
+    <p class="tale">${p.tale}</p>
+    <div class="sec-h">부스</div>
+    <div class="booth">
+      <p class="booth-name">${b.title}</p>
+      <p>${b.about}</p>
+      ${factsHTML(b,p.id)}
+      ${b.attend?ATTEND:''}
+    </div>
+    <div class="stampbox" id="stampBox"></div>
+    <nav class="pager" aria-label="다른 섬">
+      ${prev?`<a href="#${prev.id}">← ${prev.name}</a>`:'<span></span>'}
+      ${next?`<a href="#${next.id}">${next.name} →</a>`:'<span></span>'}
+    </nav>
+    <div class="home-row"><a class="btn" href="#map">항해도로 돌아가기</a></div>
+  </div>`;
+  renderStampBox();
+  $('mapPage').hidden=true; $('boothPage').hidden=false;
+  window.scrollTo(0,0);
+  document.title=`${p.name} · 이타카로의 귀환`;
+}
+function showMap(v){
+  const wasPage=pageId!==null;
+  pageId=null;
+  $('boothPage').hidden=true; $('boothPage').innerHTML=''; $('mapPage').hidden=false;
+  document.title='이타카로의 귀환';
+  if(v)setView(v);
+  if(wasPage)window.scrollTo(0,mapScrollY);
+}
+
+/* ---- view switch ---- */
+function setView(v){
+  $('odysseyView').hidden=v!=='odyssey';
+  $('veritasView').hidden=v!=='veritas';
+  $('vOdyssey').setAttribute('aria-pressed',v==='odyssey');
+  $('vVeritas').setAttribute('aria-pressed',v==='veritas');
+}
+$('vOdyssey').addEventListener('click',()=>{location.hash='map';});
+$('vVeritas').addEventListener('click',()=>{location.hash='veritas';});
+/* ---- Veritas Hall A floor plans (traced from the posted plans) ----
+   부스 방이 정해지면 여기에 적으면 도면에 핀이 찍혀요. 예: lotus:'301' */
+const BOOTH_ROOMS = {
+  lotus:'406', cyclops:'408', laestrygonians:'407', aiaia:'403', sirens:'309',
+  scylla:'310', thrinacia:'402', ogygia:'401', scheria:'306', ithaca:'303'
+};
+// [type, x, y, w, h, label]  r=room v=open s=stairs e=elevator w=restroom t=terrace
+const FLOORS = {
+  3:{ vb:[100,80,1150,770], foot:[[110,90,465,305],[665,90,65,305],[150,395,1080,440]], items:[
+    ['r',110,90,415,305,'303'],['r',525,90,50,305],['s',665,90,65,305],
+    ['v',250,395,320,150],['s',580,400,80,55],
+    ['r',720,395,60,95,'304'],['r',780,395,75,95,'305'],['r',860,395,295,95,'306'],['r',1160,395,70,100,'308'],
+    ['v',665,490,50,55],['v',750,490,80,60],['v',870,490,115,55],['v',1015,490,115,55],['t',1160,495,65,195],
+    ['r',500,545,70,55,'313'],['s',150,540,60,90],['s',265,545,135,90],['s',450,545,50,55],
+    ['r',160,690,195,145,'301'],['r',360,690,175,145,'302'],['e',540,690,30,110],['r',540,800,30,35,'312'],
+    ['s',620,685,95,75],['r',620,760,95,75,'311'],['w',745,595,115,240],
+    ['r',865,600,140,230],['r',1045,600,110,90,'309'],['r',1045,690,110,140,'310']
+  ]},
+  4:{ vb:[0,60,1400,980], poly:'80,70 1345,70 1345,455 1295,455 1295,630 1395,630 1395,1030 650,1030 650,650 5,650 5,530 80,530', items:[
+    ['r',80,75,140,185,'411'],['r',80,260,140,130,'410'],['v',272,75,186,315],
+    ['w',458,75,190,180],['w',490,255,115,135],['s',648,75,62,195],['e',710,75,50,195],['s',832,75,33,195],
+    ['r',865,75,290,195,'데크'],['r',1155,75,185,195,'401'],
+    ['r',835,335,127,60,'404'],['r',965,335,162,120,'403'],['r',1127,335,163,120,'402'],
+    ['s',1290,335,55,120],['s',838,395,72,60],
+    ['v',128,452,140,78],['s',315,452,142,48],['v',315,500,142,30],['v',502,452,113,78],
+    ['r',5,530,98,120,'409'],['r',103,530,189,120,'408'],['r',292,530,190,120,'407'],['r',482,530,159,120,'406'],['r',641,530,69,120,'405'],
+    ['v',710,455,585,180],['v',665,455,45,75],['v',650,635,745,395]
+  ]}
+};
+const FP_DEFS = `<defs>
+<filter id="apRough" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter>
+<filter id="apStain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.005" numOctaves="4" seed="9"/><feColorMatrix values="0 0 0 0 0.52  0 0 0 0 0.33  0 0 0 0 0.1  2.3 0 0 0 -1.05"/></filter>
+<filter id="apGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="2"/><feColorMatrix values="0 0 0 0 0.35  0 0 0 0 0.22  0 0 0 0 0.08  1.6 0 0 0 -0.62"/></filter>
+<radialGradient id="apVig" cx="50%" cy="50%" r="72%"><stop offset="55%" stop-color="#5a3510" stop-opacity="0"/><stop offset="100%" stop-color="#5a3510" stop-opacity=".55"/></radialGradient>
+<pattern id="apXh" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M0 16L16 0M-4 4L4 -4M12 20L20 12M0 0L16 16M-4 12L4 20M12 -4L20 4" stroke="#6a4f33" stroke-width="1.1" opacity=".55"/></pattern>
+<pattern id="apSt" width="11" height="11" patternUnits="userSpaceOnUse"><path d="M1 0V11" stroke="#3a2614" stroke-width="1.6" opacity=".75"/></pattern>
+<pattern id="apDot" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="6" cy="6" r="1.4" fill="#6a4f33" opacity=".5"/></pattern>
+</defs>`;
+const FILL={r:'rgba(255,250,235,.42)',v:'url(#apXh)',s:'url(#apSt)',e:'rgba(58,38,20,.2)',w:'rgba(52,78,120,.16)',t:'url(#apDot)'};
+const DECO={3:{x:990,y:235,cx:1170,cy:300},4:{x:300,y:800,cx:560,cy:930}};
+function compass(cx,cy,r){
+  const pt=(a,d)=>[cx+Math.sin(a)*d,cy-Math.cos(a)*d].map(v=>v.toFixed(1)).join(',');
+  let g=`<g opacity=".85"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#3a2614" stroke-width="1.5"/><circle cx="${cx}" cy="${cy}" r="${r*0.82}" fill="none" stroke="#3a2614" stroke-width=".8"/>`;
+  for(let k=0;k<8;k++){ const a=k*Math.PI/4, L=k%2?r*0.55:r*0.95, w=k%2?r*0.08:r*0.14;
+    g+=`<polygon points="${pt(a,L)} ${pt(a+Math.PI/2,w)} ${pt(a+Math.PI,w*0.2)} ${pt(a-Math.PI/2,w)}" fill="${k===0?'#8f2a17':(k%2?'#6a4f33':'#3a2614')}"/>`; }
+  return g+`<text class="num" x="${cx}" y="${cy-r-16}" font-size="20">N</text></g>`;
+}
+
+const SHORT={lotus:'망각의 연꽃',cyclops:'폴리페모스 다트',laestrygonians:'거인족의 습격',aiaia:'망자 맞히기',sirens:'세이렌의 유혹',
+  scylla:'스퀼라와 카륍디스',thrinacia:'태양신의 소',ogygia:'칼립소의 카페',scheria:'파이아키아의 연회',ithaca:'이타카'};
+function wrapKo(t,max){ const out=[]; let cur=''; t.split(' ').forEach(w=>{ if(cur&&(cur+' '+w).length>max){out.push(cur);cur=w;} else cur=cur?cur+' '+w:w; }); if(cur)out.push(cur); return out; }
+function roomsOf(id){ return [].concat(BOOTH_ROOMS[id]||[]).map(r=>String(r).trim()).filter(Boolean); }
+const CLS={r:'rm',v:'vd',s:'st',e:'ev',w:'wc',t:'tr'};
+function drawFloor(f){
+  const F=FLOORS[f], M=36, [vx,vy,vw,vh]=[F.vb[0]-M,F.vb[1]-M,F.vb[2]+2*M,F.vb[3]+2*M], roomBooth={};
+  PLACES.forEach(p=>roomsOf(p.id).forEach(r=>{ if(r[0]===String(f)) roomBooth[r]=p; }));
+  let paper=`<rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" fill="#e9d6ab"/><rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" filter="url(#apStain)" opacity=".6"/><rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" filter="url(#apGrain)" opacity=".55"/>`;
+  let sh='', lb='';
+  sh+=F.poly?`<polygon points="${F.poly}" fill="rgba(120,85,40,.10)" stroke="#3a2614" stroke-width="5"/>`:F.foot.map(([x,y,w,h])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgba(120,85,40,.10)" stroke="#3a2614" stroke-width="5"/>`).join('');
+  if(!F.poly) sh+=F.foot.map(([x,y,w,h])=>`<rect x="${x+2.5}" y="${y+2.5}" width="${w-5}" height="${h-5}" fill="#e3cfa2"/>`).join('');
+  F.items.forEach(([t,x,y,w,h,l])=>{
+    const cx=x+w/2, cy=y+h/2, p=t==='r'&&l?roomBooth[l]:null;
+    sh+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${p?'rgba(163,48,30,.17)':FILL[t]}" stroke="${p?'#8f2a17':t==='w'?'#2e4a78':'#3a2614'}" stroke-width="${p?3.5:t==='r'?2.2:1.4}"/>`;
+    if(t==='w'&&h>60) lb+=`<text class="wct" x="${cx}" y="${cy}" font-size="22">화장실</text>`;
+    if(t==='e'&&h>60) lb+=`<text class="sm" x="${cx}" y="${cy}" font-size="16">EV</text>`;
+    if(t==='v'&&w>200&&h>120) lb+=`<text class="open" x="${cx}" y="${cy}" font-size="24">open</text>`;
+    if(t==='r'&&l){
+      const fs=Math.max(15,Math.min(28,(w-10)/(l.length*0.72),h*0.5));
+      if(p){
+        let g=`<rect class="hit" x="${x}" y="${y}" width="${w}" height="${h}"/>`;
+        const name=SHORT[p.id]||p.booth.title, sealT=p.booth.final?'Ω':p.tag, done=stamps.has(p.id);
+        const sealFill=done?'#8d8a84':p.booth.final?'#d4a73f':'#a3301e', sealTxt=p.booth.final&&!done?'#2a1a0a':'#fbf1da';
+        const seal=(sx,sy,r)=>`<circle cx="${sx}" cy="${sy}" r="${r+3}" fill="none" stroke="${done?'#8d8a84':'#b08a3e'}" stroke-width="1.5"/><circle cx="${sx}" cy="${sy}" r="${r}" fill="${sealFill}"/><text class="seal-t" x="${sx}" y="${sy}" font-size="${(r*1.05).toFixed(1)}" style="fill:${sealTxt}">${sealT}</text>`;
+        if(w>2*h){
+          let nf=Math.min(vw/48,(h-14)/2.1,(w-24)/(name.length+2.4)); const r=nf*1.05, rf=nf*0.75;
+          const tw=2*r+nf*0.5+name.length*nf, x0=cx-tw/2, tx=x0+2*r+nf*0.5+name.length*nf/2;
+          g+=seal(x0+r,cy,r);
+          g+=`<text class="bname" x="${tx}" y="${(cy-rf*0.55).toFixed(1)}" font-size="${nf.toFixed(1)}">${name}</text><text class="sm num" x="${tx}" y="${(cy+nf*0.75).toFixed(1)}" font-size="${rf.toFixed(1)}">${l}</text>`;
+        } else {
+          const lines=wrapKo(name,7);
+          const fitW=(w-16)/Math.max(...lines.map(x=>x.length));
+          const block=(k,room)=>2*k*0.95+k*0.35+lines.length*k*1.2+(room?k*1.05:0);
+          let room=true, nf=Math.min(vw/52,fitW);
+          if(block(nf,true)>h-12){ nf=Math.min(fitW,(h-12)/block(1,true)); if(nf<vw/70){room=false; nf=Math.min(vw/52,fitW,(h-10)/block(1,false));} }
+          const r=nf*0.9, rf=nf*0.75; let y0=cy-block(nf,room)/2;
+          const sy=y0+nf*0.95; y0+=2*nf*0.95+nf*0.35;
+          g+=seal(cx,sy,r);
+          lines.forEach((ln,k)=>{ g+=`<text class="bname" x="${cx}" y="${(y0+nf*1.2*(k+0.5)).toFixed(1)}" font-size="${nf.toFixed(1)}">${ln}</text>`; });
+          if(room) g+=`<text class="sm num" x="${cx}" y="${(y0+lines.length*nf*1.2+nf*0.3+rf/2).toFixed(1)}" font-size="${rf.toFixed(1)}">${l}</text>`;
+        }
+        lb+=`<a href="#${p.id}" aria-label="${l}호 · ${p.booth.title}">${g}</a>`;
+      } else lb+=`<text class="num" x="${cx}" y="${cy}" font-size="${fs.toFixed(1)}">${l}</text>`;
+    }
+  });
+  const D=DECO[f], roman={3:'III',4:'IV'}[f]||f;
+  let deco='';
+  if(D){
+    deco+=`<text class="ttl-en" x="${D.x}" y="${D.y-44}" font-size="16">PLAN · FLOOR ${roman}</text>`;
+    deco+=`<text class="ttl" x="${D.x}" y="${D.y}" font-size="44">진리관A ${f}층</text>`;
+    deco+=`<path d="M${D.x-150} ${D.y+36}H${D.x+150}M${D.x-150} ${D.y+42}H${D.x+150}" stroke="#3a2614" stroke-width="1.2"/><path d="M${D.x} ${D.y+33}l6 6-6 6-6-6z" fill="#8f2a17"/>`;
+    deco+=compass(D.cx,D.cy,48);
+  }
+  const frame=`<rect x="${vx+8}" y="${vy+8}" width="${vw-16}" height="${vh-16}" fill="none" stroke="#3a2614" stroke-width="2.5"/><rect x="${vx+15}" y="${vy+15}" width="${vw-30}" height="${vh-30}" fill="none" stroke="#3a2614" stroke-width="1"/>`;
+  let o=FP_DEFS+paper+`<g filter="url(#apRough)">${sh}${deco}${frame}</g>`+`<rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" fill="url(#apVig)" pointer-events="none"/>`+lb;
+  const svg=$('fpSvg'); svg.setAttribute('viewBox',`${vx} ${vy} ${vw} ${vh}`); svg.innerHTML=o;
+  svg.setAttribute('aria-label',`진리관A ${f}층 도면`);
+  const here=Object.keys(roomBooth).sort();
+  const bs=[...new Set(here.map(r=>roomBooth[r]))].sort((a,b)=>(a.booth.final?99:+a.tag)-(b.booth.final?99:+b.tag));
+  $('fpBooths').innerHTML=bs.map(p=>`<li><a href="#${p.id}" class="${stamps.has(p.id)?'done':''}${p.booth.final?' final':''}"><span class="fb-seal">${p.booth.final?'Ω':p.tag}</span><span class="fb-name">${SHORT[p.id]||p.booth.title}</span><span class="fb-room">${here.filter(r=>roomBooth[r]===p).join('·')}호</span></a></li>`).join('');
+  $('fpNote').textContent = here.length ? '방이나 부스 이름을 누르면 부스 안내로 가요.' : `${f}층에는 아직 배정된 부스가 없어요.`;
+}
+let curFloor='3';
+function selectFloor(f){
+  if(!FLOORS[f])return; curFloor=String(f);
+  document.querySelectorAll('.floors button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.floor===curFloor));
+  drawFloor(curFloor);
+}
+document.querySelectorAll('.floors button').forEach(b=>b.addEventListener('click',()=>selectFloor(b.dataset.floor)));
+selectFloor(curFloor);
+
+/* ---- routing ---- */
+function route(){
+  const h=location.hash.slice(1);
+  if(h==='veritas'||h.startsWith('veritas-')){ const f=h.split('-')[1]; if(f)selectFloor(f); else drawFloor(curFloor); return showMap('veritas'); }
+  if(PLACES.some(p=>p.id===h)) return showBooth(h);
+  showMap(h==='map'?'odyssey':null);
+}
+window.addEventListener('hashchange',route);
+document.addEventListener('keydown',e=>{
+  if(!pageId||e.target.closest('input,textarea'))return;
+  const i=PLACES.findIndex(p=>p.id===pageId);
+  if(e.key==='ArrowRight'&&PLACES[i+1])location.hash=PLACES[i+1].id;
+  if(e.key==='ArrowLeft'&&PLACES[i-1])location.hash=PLACES[i-1].id;
+  if(e.key==='Escape')location.hash='map';
+});
+
+/* ---- welcome gate ---- */
+const gate=$('gate');
+function enter(){gate.hidden=true;document.body.style.overflow='';}
+$('enter').addEventListener('click',enter);
+if(location.hash.length>1){enter();}else{document.body.style.overflow='hidden';$('enter').focus({preventScroll:true});}
+
+renderStamps();
+route();
+</script>
+
+</body></html>
