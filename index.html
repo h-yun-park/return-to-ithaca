@@ -366,7 +366,7 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
         <li>도장 <b>7개</b>를 모으면 이타카에서 활을 쏠 자격이 생겨요.</li>
         <li>7개를 채운 도장판을 사진 찍어 <b>출석 구글폼</b>에 올려야 출석이 인정돼요.</li>
       </ul>
-      <div class="gate-name" id="gateName" hidden><label for="nameIn">선원 이름 (도장 기록에 쓰여요)</label><input class="code-in" id="nameIn" maxlength="20" autocomplete="name" placeholder="예: 박정현"><p class="code-msg err" id="nameMsg" role="alert"></p></div>
+      <div class="gate-name" id="gateName" hidden><label for="nameIn">선원 이름</label><input class="code-in" id="nameIn" maxlength="20" autocomplete="name" placeholder="예: 박정현"><label for="snoIn">학번</label><input class="code-in" id="snoIn" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="예: 2023123456"><p class="code-msg err" id="nameMsg" role="alert"></p><p class="who-row">이름과 학번은 도장·출석 확인에만 쓰여요.</p></div>
       <button class="btn" id="enter">승선하기</button>
     </div>
     <div class="band" aria-hidden="true"></div>
@@ -521,18 +521,24 @@ const $=id=>document.getElementById(id);
 /* ---- stamps ----
    API가 비어 있으면: 이 브라우저에만 저장(예전 방식).
    API가 있으면: 부스 코드를 넣어야 도장이 찍히고, 구글 시트(운영진)에 이름과 함께 기록돼요. */
-const API='';
-const KEY='odyssey-stamps-v1', SID_KEY='odyssey-sid-v1', NAME_KEY='odyssey-name-v1';
+const API='https://script.google.com/macros/s/AKfycbxf4pRMpfQMnEDYmwWI0fyKTDdRXjSyLjwrGggPNMxMADf_xIKZd9FPLobXcyZBOogs/exec';
+const KEY='odyssey-stamps-v1', SNO_KEY='odyssey-sno-v1', NAME_KEY='odyssey-name-v1';
 const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}}, lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
-let sid=lsGet(SID_KEY);
-if(!sid){sid=(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12));lsSet(SID_KEY,sid);}
-let sailor=lsGet(NAME_KEY)||'';
+let sno=lsGet(SNO_KEY)||'', sailor=lsGet(NAME_KEY)||'';
+const SNO_RE=/^\d{8,10}$/;
 async function api(body){
-  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...body,sid})});
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...body,sno})});
   const j=await r.json(); if(!j.ok) throw new Error(j.error||'요청에 실패했어요.'); return j;
 }
 function applyServer(list){stamps=new Set(list||[]);saveStamps();renderStamps();if(pageId)renderStampBox();}
-async function register(name){const j=await api({action:'register',name});sailor=j.name;lsSet(NAME_KEY,sailor);applyServer(j.stamps);}
+async function register(name,no){
+  no=String(no||'').replace(/\D/g,''); name=String(name||'').trim();
+  if(!name) throw new Error('이름을 적어 주세요.');
+  if(!SNO_RE.test(no)) throw new Error('학번을 숫자로 정확히 적어 주세요.');
+  const prev=sno; sno=no;
+  try{const j=await api({action:'register',name});sailor=j.name;lsSet(NAME_KEY,sailor);lsSet(SNO_KEY,sno);applyServer(j.stamps);}
+  catch(e){sno=prev;throw e;}
+}
 let stamps=new Set();
 try{stamps=new Set(JSON.parse(localStorage.getItem(KEY)||'[]'));}catch(e){}
 const count=()=>BOOTHS.filter(p=>stamps.has(p.id)).length;
@@ -613,10 +619,10 @@ function renderStampBox(){
 }
 function renderCodeBox(p,el,done,n){
   const st=statusText(n).replace(/<[^>]+>/g,'');
-  const who=sailor?`<p class="who-row">선원 <b>${esc(sailor)}</b> · <button type="button" id="rename">이름 바꾸기</button></p>`:'';
-  if(!sailor){
-    el.innerHTML=`<form class="code-form" id="cf"><label for="cIn">먼저 선원 이름을 적어 주세요</label><div class="code-row"><input class="code-in" id="cIn" maxlength="20" autocomplete="name" placeholder="예: 박정현" required><button class="btn">등록</button></div><p class="code-msg" id="cMsg" role="status"></p></form>`;
-    $('cf').addEventListener('submit',async e=>{e.preventDefault();const v=$('cIn').value.trim();if(!v)return;msg('등록 중…');try{await register(v);}catch(err){msg(err.message,1);}});
+  const who=sailor?`<p class="who-row">선원 <b>${esc(sailor)}</b> (${esc(sno)}) · <button type="button" id="rename">정보 고치기</button></p>`:'';
+  if(!sailor||!sno){
+    el.innerHTML=`<form class="code-form" id="cf"><label for="nIn">먼저 이름과 학번을 등록해 주세요</label><input class="code-in" id="nIn" maxlength="20" autocomplete="name" placeholder="이름 (예: 박정현)" required value="${esc(sailor)}"><div class="code-row"><input class="code-in" id="sIn" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="학번 (예: 2023123456)" required><button class="btn">등록</button></div><p class="code-msg" id="cMsg" role="status"></p></form>`;
+    $('cf').addEventListener('submit',async e=>{e.preventDefault();msg('등록 중…');try{await register($('nIn').value,$('sIn').value);}catch(err){msg(err.message,1);}});
     return;
   }
   if(done){
@@ -630,7 +636,7 @@ function renderCodeBox(p,el,done,n){
       catch(err){b.disabled=false;msg(err.message,1);}
     });
   }
-  const rn=$('rename'); if(rn) rn.addEventListener('click',async()=>{const v=prompt('바꿀 이름',sailor);if(v&&v.trim()){try{await register(v.trim());}catch(err){alert(err.message);}}});
+  const rn=$('rename'); if(rn) rn.addEventListener('click',()=>{sailor='';renderStampBox();const n=$('nIn');if(n)n.value=lsGet(NAME_KEY)||'';});
 }
 function msg(t,err){const m=$('cMsg');if(m){m.textContent=t;m.classList.toggle('err',!!err);}}
 function esc(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -847,18 +853,19 @@ document.addEventListener('keydown',e=>{
 /* ---- welcome gate ---- */
 const gate=$('gate');
 function enter(){gate.hidden=true;document.body.style.overflow='';}
-if(API){$('gateName').hidden=false;$('nameIn').value=sailor;}
+if(API){$('gateName').hidden=false;$('nameIn').value=sailor;$('snoIn').value=sno;}
 $('enter').addEventListener('click',async()=>{
   if(!API) return enter();
-  const v=$('nameIn').value.trim(), m=$('nameMsg');
+  const v=$('nameIn').value.trim(), no=$('snoIn').value.replace(/\D/g,''), m=$('nameMsg');
   if(!v){m.textContent='이름을 적어 주세요.';$('nameIn').focus();return;}
-  if(v===sailor) return enter();
+  if(!SNO_RE.test(no)){m.textContent='학번을 숫자로 정확히 적어 주세요.';$('snoIn').focus();return;}
+  if(v===sailor&&no===sno) return enter();
   m.textContent='';$('enter').disabled=true;$('enter').textContent='승선 중…';
-  try{await register(v);enter();}catch(err){m.textContent=err.message;}
+  try{await register(v,no);enter();}catch(err){m.textContent=err.message;}
   finally{$('enter').disabled=false;$('enter').textContent='승선하기';}
 });
-$('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('enter').click();});
-if(API) api({action:'status'}).then(j=>{if(j.registered){sailor=j.name;lsSet(NAME_KEY,sailor);applyServer(j.stamps);}}).catch(()=>{});
+['nameIn','snoIn'].forEach(i=>$(i).addEventListener('keydown',e=>{if(e.key==='Enter')$('enter').click();}));
+if(API&&sno) api({action:'status'}).then(j=>{if(j.registered){sailor=j.name;lsSet(NAME_KEY,sailor);applyServer(j.stamps);}}).catch(()=>{});
 if(location.hash.length>1){enter();}else{document.body.style.overflow='hidden';$('enter').focus({preventScroll:true});}
 
 renderStamps();
