@@ -220,6 +220,28 @@ h1{margin:0;font-family:var(--f-title);font-weight:400;font-size:clamp(36px,6.5v
 .stamp-note{font-size:12.5px;color:var(--ink-soft);text-align:center;margin:0}
 .lock{padding:12px 16px;border:1.5px dashed var(--gold-deep);border-radius:8px;font-size:14.5px;background:var(--parch-hi)}
 .lock b{color:var(--verm)}
+.sail{position:fixed;inset:0;z-index:60;pointer-events:none;display:grid;place-items:center;background:#0b0a09;opacity:0;animation:sailBg 1.15s ease forwards}
+.sail svg{width:min(42vw,220px);color:var(--gold-hi,#e2c27a);overflow:visible}
+.sail .boat{animation:sailBoat 1.15s cubic-bezier(.45,.05,.4,1) forwards}
+.sail .bob{animation:bob .5s ease-in-out infinite alternate;transform-origin:50% 80%}
+.sail .waves{animation:waves .6s linear infinite}
+@keyframes sailBg{0%{opacity:0}22%{opacity:1}72%{opacity:1}100%{opacity:0}}
+@keyframes sailBoat{0%{transform:translateX(-70vw)}45%,55%{transform:translateX(0)}100%{transform:translateX(70vw)}}
+@keyframes bob{from{transform:rotate(-4deg) translateY(0)}to{transform:rotate(3deg) translateY(-3px)}}
+@keyframes waves{from{transform:translateX(0)}to{transform:translateX(-40px)}}
+@media (prefers-reduced-motion:reduce){.sail{display:none}}
+.code-form{display:flex;flex-direction:column;gap:8px}
+.code-form label{font-size:14px;font-weight:700}
+.code-row{display:flex;gap:8px}
+.code-in{flex:1;min-width:0;box-sizing:border-box;font:inherit;font-size:18px;padding:12px 14px;border-radius:10px;border:1.5px solid var(--gold-deep);background:var(--parch-hi);color:var(--ink)}
+.code-in:focus{outline:3px solid var(--lapis);outline-offset:1px}
+.code-row .btn{padding:12px 20px;font-size:16px}
+.code-msg{font-size:13.5px;margin:0;min-height:1.2em}
+.code-msg.err{color:var(--verm)}
+.gate-name{width:100%;display:flex;flex-direction:column;gap:6px;text-align:left;margin-top:6px}
+.gate-name label{font-size:14px;color:var(--gold-hi)}
+.who-row{font-size:13px;color:var(--ink-soft);text-align:center;margin:0}
+.who-row button{all:unset;cursor:pointer;text-decoration:underline}
 .pager{display:flex;justify-content:space-between;gap:12px;margin-top:28px;padding-top:14px;border-top:1px solid var(--line)}
 .pager a{font-family:var(--f-serif);font-weight:600;font-size:14.5px;color:var(--ink-soft);text-decoration:none;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:6px 2px}
 .pager a:hover{color:var(--verm)}
@@ -310,6 +332,8 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
 .stamp-btn.done{background:transparent;color:var(--ink-soft);border:1px dashed #6f6b64;box-shadow:none}
 .lock{background:#15130f;border-color:rgba(201,164,92,.45)}
 .lock b{color:var(--hot)}
+.code-in{background:#15130f;border-color:rgba(201,164,92,.55);color:var(--gold-hi)}
+.code-msg.err{color:var(--hot)}
 .pager a:hover{color:var(--gold-hi)}
 
 /* antique survey-plan look for Jinrigwan A */
@@ -342,6 +366,7 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
         <li>도장 <b>7개</b>를 모으면 이타카에서 활을 쏠 자격이 생겨요.</li>
         <li>7개를 채운 도장판을 사진 찍어 <b>출석 구글폼</b>에 올려야 출석이 인정돼요.</li>
       </ul>
+      <div class="gate-name" id="gateName" hidden><label for="nameIn">선원 이름 (도장 기록에 쓰여요)</label><input class="code-in" id="nameIn" maxlength="20" autocomplete="name" placeholder="예: 박정현"><p class="code-msg err" id="nameMsg" role="alert"></p></div>
       <button class="btn" id="enter">승선하기</button>
     </div>
     <div class="band" aria-hidden="true"></div>
@@ -493,8 +518,21 @@ const NEED=7, BOOTHS=PLACES.filter(p=>!p.final), TOTAL=BOOTHS.length;
 const ROMAN=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
 const $=id=>document.getElementById(id);
 
-/* ---- stamps (saved only in this browser) ---- */
-const KEY='odyssey-stamps-v1';
+/* ---- stamps ----
+   API가 비어 있으면: 이 브라우저에만 저장(예전 방식).
+   API가 있으면: 부스 코드를 넣어야 도장이 찍히고, 구글 시트(운영진)에 이름과 함께 기록돼요. */
+const API='';
+const KEY='odyssey-stamps-v1', SID_KEY='odyssey-sid-v1', NAME_KEY='odyssey-name-v1';
+const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}}, lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+let sid=lsGet(SID_KEY);
+if(!sid){sid=(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12));lsSet(SID_KEY,sid);}
+let sailor=lsGet(NAME_KEY)||'';
+async function api(body){
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...body,sid})});
+  const j=await r.json(); if(!j.ok) throw new Error(j.error||'요청에 실패했어요.'); return j;
+}
+function applyServer(list){stamps=new Set(list||[]);saveStamps();renderStamps();if(pageId)renderStampBox();}
+async function register(name){const j=await api({action:'register',name});sailor=j.name;lsSet(NAME_KEY,sailor);applyServer(j.stamps);}
 let stamps=new Set();
 try{stamps=new Set(JSON.parse(localStorage.getItem(KEY)||'[]'));}catch(e){}
 const count=()=>BOOTHS.filter(p=>stamps.has(p.id)).length;
@@ -569,12 +607,53 @@ function renderStampBox(){
     return;
   }
   const done=stamps.has(p.id);
+  if(API) return renderCodeBox(p,el,done,n);
   el.innerHTML=`<button class="btn stamp-btn${done?' done':''}" id="stampBtn">${done?'도장 받음 · 취소하려면 누르기':'이 부스 도장 받았어요'}</button><p class="stamp-note">${statusText(n).replace(/<[^>]+>/g,'')}<br>이 체크는 내 휴대폰에만 저장되는 기록이에요. 출석 인증은 실제 도장판 사진으로 해요.</p>`;
   $('stampBtn').addEventListener('click',()=>{toggleStamp(p.id);const hn=document.querySelector('.hero-no');if(hn)hn.classList.toggle('done',stamps.has(p.id));});
 }
+function renderCodeBox(p,el,done,n){
+  const st=statusText(n).replace(/<[^>]+>/g,'');
+  const who=sailor?`<p class="who-row">선원 <b>${esc(sailor)}</b> · <button type="button" id="rename">이름 바꾸기</button></p>`:'';
+  if(!sailor){
+    el.innerHTML=`<form class="code-form" id="cf"><label for="cIn">먼저 선원 이름을 적어 주세요</label><div class="code-row"><input class="code-in" id="cIn" maxlength="20" autocomplete="name" placeholder="예: 박정현" required><button class="btn">등록</button></div><p class="code-msg" id="cMsg" role="status"></p></form>`;
+    $('cf').addEventListener('submit',async e=>{e.preventDefault();const v=$('cIn').value.trim();if(!v)return;msg('등록 중…');try{await register(v);}catch(err){msg(err.message,1);}});
+    return;
+  }
+  if(done){
+    el.innerHTML=`<div class="btn stamp-btn done" role="status">이 부스 도장 받음</div><p class="stamp-note">${st}<br>운영진 기록에도 남았어요. 출석은 도장판 사진도 함께 올려 인증해요.</p>${who}`;
+  }else{
+    el.innerHTML=`<form class="code-form" id="cf"><label for="cIn">부스 코드 (활동을 마치면 RA가 알려 줘요)</label><div class="code-row"><input class="code-in" id="cIn" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="4자리 숫자" required><button class="btn">도장 받기</button></div><p class="code-msg" id="cMsg" role="status"></p></form><p class="stamp-note">${st}</p>${who}`;
+    $('cf').addEventListener('submit',async e=>{
+      e.preventDefault();const v=$('cIn').value.trim();if(!v)return;
+      const b=e.target.querySelector('button');b.disabled=true;msg('확인 중…');
+      try{const j=await api({action:'stamp',booth:p.id,code:v,name:sailor});applyServer(j.stamps);const hn=document.querySelector('.hero-no');if(hn)hn.classList.add('done');}
+      catch(err){b.disabled=false;msg(err.message,1);}
+    });
+  }
+  const rn=$('rename'); if(rn) rn.addEventListener('click',async()=>{const v=prompt('바꿀 이름',sailor);if(v&&v.trim()){try{await register(v.trim());}catch(err){alert(err.message);}}});
+}
+function msg(t,err){const m=$('cMsg');if(m){m.textContent=t;m.classList.toggle('err',!!err);}}
+function esc(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+/* ---- 돛단배 전환: 항해도에서 부스로 넘어갈 때 ---- */
+let booted=false;
+function sailAway(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return false;
+  const old=document.querySelector('.sail'); if(old)old.remove();
+  const o=document.createElement('div'); o.className='sail'; o.setAttribute('aria-hidden','true');
+  o.innerHTML=`<svg viewBox="0 0 120 100"><g class="boat"><g class="bob">
+    <path d="M58 10v58" stroke="currentColor" stroke-width="2.5"/><path d="M58 10l12 4-12 4z" fill="currentColor"/>
+    <path d="M55 18 L55 64 L22 64 Z" fill="currentColor"/><path d="M61 16 Q92 40 88 64 L61 64 Z" fill="currentColor" opacity=".85"/>
+    <path d="M12 69 H108 L96 84 H26 Z" fill="currentColor"/></g></g>
+    <g class="waves" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".7">
+    <path d="M-20 90 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
+    <path d="M0 98 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" opacity=".6"/></g></svg>`;
+  document.body.appendChild(o);
+  setTimeout(()=>o.remove(),1250);
+  return true;
+}
 function showBooth(id){
   const i=PLACES.findIndex(p=>p.id===id); if(i<0)return showMap();
-  if(pageId===null)mapScrollY=window.scrollY;
+  let delay=0; if(pageId===null){mapScrollY=window.scrollY;if(booted&&sailAway())delay=280;}
   const p=PLACES[i], b=p.booth, prev=PLACES[i-1], next=PLACES[i+1];
   pageId=id;
   const no=p.final?'FINAL BOOTH':'BOOTH '+p.tag;
@@ -607,8 +686,8 @@ function showBooth(id){
     <div class="home-row"><a class="btn" href="#map">항해도로 돌아가기</a></div>
   </div>`;
   renderStampBox();
-  $('mapPage').hidden=true; $('boothPage').hidden=false;
-  window.scrollTo(0,0);
+  const swap=()=>{if(pageId!==id)return;$('mapPage').hidden=true; $('boothPage').hidden=false; window.scrollTo(0,0);};
+  delay?setTimeout(swap,delay):swap();
   document.title=`${p.name} · 이타카로의 귀환`;
 }
 function showMap(v){
@@ -768,11 +847,23 @@ document.addEventListener('keydown',e=>{
 /* ---- welcome gate ---- */
 const gate=$('gate');
 function enter(){gate.hidden=true;document.body.style.overflow='';}
-$('enter').addEventListener('click',enter);
+if(API){$('gateName').hidden=false;$('nameIn').value=sailor;}
+$('enter').addEventListener('click',async()=>{
+  if(!API) return enter();
+  const v=$('nameIn').value.trim(), m=$('nameMsg');
+  if(!v){m.textContent='이름을 적어 주세요.';$('nameIn').focus();return;}
+  if(v===sailor) return enter();
+  m.textContent='';$('enter').disabled=true;$('enter').textContent='승선 중…';
+  try{await register(v);enter();}catch(err){m.textContent=err.message;}
+  finally{$('enter').disabled=false;$('enter').textContent='승선하기';}
+});
+$('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('enter').click();});
+if(API) api({action:'status'}).then(j=>{if(j.registered){sailor=j.name;lsSet(NAME_KEY,sailor);applyServer(j.stamps);}}).catch(()=>{});
 if(location.hash.length>1){enter();}else{document.body.style.overflow='hidden';$('enter').focus({preventScroll:true});}
 
 renderStamps();
 route();
+booted=true;
 </script>
 
 </body></html>
