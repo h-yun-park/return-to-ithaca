@@ -73,11 +73,11 @@ a{color:var(--verm)}
 h1{margin:0;font-family:var(--f-title);font-weight:400;font-size:clamp(36px,6.5vw,60px);line-height:1.1;color:var(--lapis-deep);text-wrap:balance}
 .sub{font-family:var(--f-deco);font-size:clamp(12px,1.6vw,16px);letter-spacing:.14em;color:var(--gold-deep)}
 
-.switch{align-self:center;display:inline-grid;grid-template-columns:1fr 1fr;border:2px solid var(--gold);border-radius:999px;padding:3px;background:var(--parch-hi);box-shadow:0 2px 0 var(--gold-deep)}
+.switch{align-self:center;display:inline-grid;grid-template-columns:1fr 1fr 1fr;border:2px solid var(--gold);border-radius:999px;padding:3px;background:var(--parch-hi);box-shadow:0 2px 0 var(--gold-deep)}
 .switch button{all:unset;cursor:pointer;padding:8px 20px;border-radius:999px;font-family:var(--f-serif);font-weight:700;font-size:15px;color:var(--lapis);text-align:center;white-space:nowrap}
 .switch button[aria-pressed="true"]{background:var(--lapis);color:var(--parch-hi);box-shadow:inset 0 0 0 1.5px var(--gold)}
 .switch button:focus-visible{outline:2px solid var(--verm);outline-offset:2px}
-@media (max-width:420px){.switch button{padding:8px 14px;font-size:14px}}
+@media (max-width:420px){.switch button{padding:8px 12px;font-size:14px}}
 
 /* ---------- stamp track ---------- */
 .track{align-self:center;width:100%;max-width:560px;display:flex;flex-direction:column;gap:6px}
@@ -230,6 +230,15 @@ h1{margin:0;font-family:var(--f-title);font-weight:400;font-size:clamp(36px,6.5v
 @keyframes bob{from{transform:rotate(-4deg) translateY(0)}to{transform:rotate(3deg) translateY(-3px)}}
 @keyframes waves{from{transform:translateX(0)}to{transform:translateX(-40px)}}
 @media (prefers-reduced-motion:reduce){.sail{display:none}}
+.att{align-self:center;width:100%;max-width:560px;display:flex;flex-direction:column;gap:14px}
+.att-card{border:1.5px solid var(--gold-deep);border-radius:12px;padding:18px 16px;background:var(--parch-hi);display:flex;flex-direction:column;gap:12px}
+.att-card h3{margin:0;font-family:var(--f-title);font-weight:400;font-size:22px;color:var(--lapis-deep)}
+.att-card ol{margin:0;padding-left:20px;font-size:14.5px;line-height:1.6}
+.att-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:140px;border:2px dashed var(--gold-deep);border-radius:12px;cursor:pointer;text-align:center;padding:14px;font-size:15px}
+.att-drop input{position:absolute;width:1px;height:1px;opacity:0}
+.att-drop:focus-within{outline:3px solid var(--lapis);outline-offset:2px}
+.att-prev{max-width:100%;max-height:360px;border-radius:8px;object-fit:contain}
+.att-done{padding:12px 14px;border-radius:10px;border:1.5px solid var(--gold);font-size:14.5px}
 .code-form{display:flex;flex-direction:column;gap:8px}
 .code-form label{font-size:14px;font-weight:700}
 .code-row{display:flex;gap:8px}
@@ -332,6 +341,9 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
 .stamp-btn.done{background:transparent;color:var(--ink-soft);border:1px dashed #6f6b64;box-shadow:none}
 .lock{background:#15130f;border-color:rgba(201,164,92,.45)}
 .lock b{color:var(--hot)}
+.att-card{background:#15130f;border-color:rgba(201,164,92,.45)}
+.att-card h3{color:var(--gold-hi)}
+.att-drop{border-color:rgba(201,164,92,.55);color:var(--gold-hi)}
 .code-in{background:#15130f;border-color:rgba(201,164,92,.55);color:var(--gold-hi)}
 .code-msg.err{color:var(--hot)}
 .pager a:hover{color:var(--gold-hi)}
@@ -364,9 +376,9 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
       <ul class="gate-rules">
         <li>섬마다 부스가 있어요. 아홉 곳 모두 들르는 걸 권장해요.</li>
         <li>도장 <b>7개</b>를 모으면 이타카에서 활을 쏠 자격이 생겨요.</li>
-        <li>7개를 채운 도장판을 사진 찍어 <b>출석 구글폼</b>에 올려야 출석이 인정돼요.</li>
+        <li>7개를 채운 도장판을 사진 찍어 <b>출석 인증</b> 탭에 올려야 출석이 인정돼요.</li>
       </ul>
-      <div class="gate-name" id="gateName" hidden><label for="nameIn">선원 이름</label><input class="code-in" id="nameIn" maxlength="20" autocomplete="name" placeholder="예: 박정현"><label for="snoIn">학번</label><input class="code-in" id="snoIn" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="예: 2023123456"><p class="code-msg err" id="nameMsg" role="alert"></p><p class="who-row">이름과 학번은 도장·출석 확인에만 쓰여요.</p></div>
+      <div class="gate-name" id="gateName" hidden><label for="nameIn">선원 이름</label><input class="code-in" id="nameIn" maxlength="20" autocomplete="name" placeholder="예: 김청송"><label for="snoIn">학번</label><input class="code-in" id="snoIn" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="예: 2023123456"><p class="code-msg err" id="nameMsg" role="alert"></p><p class="who-row">이름과 학번은 도장·출석 확인에만 쓰여요.</p></div>
       <button class="btn" id="enter">승선하기</button>
     </div>
     <div class="band" aria-hidden="true"></div>
@@ -385,6 +397,7 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
     <div class="switch" role="group" aria-label="지도 선택">
       <button id="vOdyssey" aria-pressed="true">항해도</button>
       <button id="vVeritas" aria-pressed="false">진리관A</button>
+      <button id="vAttend" aria-pressed="false">출석 인증</button>
     </div>
 
     <div class="track" aria-live="polite">
@@ -395,7 +408,7 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
     <ul class="rules">
       <li>9개 모두 도는 걸 권장</li>
       <li>7개면 이타카 활쏘기 자격</li>
-      <li>7개 채운 도장판 사진을 출석 폼에 올리면 출석 인정</li>
+      <li>7개 채운 도장판 사진을 <a href="#attend">출석 인증</a> 탭에 올리면 출석 인정</li>
     </ul>
 
     <section id="odysseyView" aria-label="항해도">
@@ -406,6 +419,8 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
         </div>
       </div></div>
     </section>
+
+    <section id="attendView" class="att" aria-label="출석 인증" hidden></section>
 
     <section id="veritasView" aria-label="진리관A 지도" hidden>
       <div class="floors" role="group" aria-label="층 선택">
@@ -495,7 +510,7 @@ const PLACES = [
   photo:{cap:"몰타 고조섬 람라 만, 칼립소의 동굴이 있다고 전해지는 곳", by:"Zefram", lic:"CC BY 2.0 de"},
   tale:"아흐레를 표류한 오디세우스는 님프 칼립소의 섬 오기기아에 닿았다. 칼립소는 그를 7년 동안 붙잡아 두며 늙지도 죽지도 않는 몸을 주겠다고 했다. 오디세우스는 그 제안을 거절하고 날마다 바닷가에 앉아 고향을 그리며 울었다. 아테나의 청으로 제우스가 헤르메스를 보내 그를 놓아주라고 명하자, 칼립소는 뗏목 만드는 일을 도와 그를 떠나보냈다.",
   booth:{ title:"칼립소의 카페",
-    about:"“어서 와요, 오디세우스. 코코아 한 잔 하고 가요. 아, 집에 가고 싶다고요? 7년째 같은 얘기를 하시네요…” 칼립소의 카페에서 따뜻한 음료와 쿠키로 잠시 쉬어 가세요. 떠나기 전에 <b>이타카에 돌아가서 이루고 싶은 소원</b>을 쪽지에 적어 칼립소에게 건네면, 헤르메스의 칙령에 따라 귀향을 허락받고 탈출 허가증 도장을 받습니다. <b>출석 구글폼 QR</b>도 여기서 안내해요.",
+    about:"“어서 와요, 오디세우스. 코코아 한 잔 하고 가요. 아, 집에 가고 싶다고요? 7년째 같은 얘기를 하시네요…” 칼립소의 카페에서 따뜻한 음료와 쿠키로 잠시 쉬어 가세요. 떠나기 전에 <b>이타카에 돌아가서 이루고 싶은 소원</b>을 쪽지에 적어 칼립소에게 건네면, 헤르메스의 칙령에 따라 귀향을 허락받고 탈출 허가증 도장을 받습니다. <b>출석 인증</b> 방법도 여기서 안내해요.",
     who:"개인", gets:["핫초코, 보이차, 아메리카노 중 1잔","로투스 쿠키","탈출 허가증 도장"],
     attend:true } },
 
@@ -595,7 +610,7 @@ PLACES.forEach(p=>{
 
 /* ---- booth page ---- */
 let pageId=null, mapScrollY=0;
-const ATTEND=`<div class="notice"><strong>출석 인증 방법</strong><ol><li>부스를 돌며 도장판에 도장을 <b>7개 이상</b> 모아요. (9개 모두 권장)</li><li>도장판을 사진으로 찍어요.</li><li>출석 구글폼에 사진을 올리면 출석이 인정돼요.</li></ol></div>`;
+const ATTEND=`<div class="notice"><strong>출석 인증 방법</strong><ol><li>부스를 돌며 도장판에 도장을 <b>7개 이상</b> 모아요. (9개 모두 권장)</li><li>도장판을 사진으로 찍어요.</li><li>항해도 위쪽 <a href="#attend">출석 인증</a> 탭에 사진을 올리면 출석이 인정돼요.</li></ol></div>`;
 function factsHTML(b,id){
   const rows=[];
   const rs=roomsOf(id);
@@ -621,7 +636,7 @@ function renderCodeBox(p,el,done,n){
   const st=statusText(n).replace(/<[^>]+>/g,'');
   const who=sailor?`<p class="who-row">선원 <b>${esc(sailor)}</b> (${esc(sno)}) · <button type="button" id="rename">정보 고치기</button></p>`:'';
   if(!sailor||!sno){
-    el.innerHTML=`<form class="code-form" id="cf"><label for="nIn">먼저 이름과 학번을 등록해 주세요</label><input class="code-in" id="nIn" maxlength="20" autocomplete="name" placeholder="이름 (예: 박정현)" required value="${esc(sailor)}"><div class="code-row"><input class="code-in" id="sIn" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="학번 (예: 2023123456)" required><button class="btn">등록</button></div><p class="code-msg" id="cMsg" role="status"></p></form>`;
+    el.innerHTML=`<form class="code-form" id="cf"><label for="nIn">먼저 이름과 학번을 등록해 주세요</label><input class="code-in" id="nIn" maxlength="20" autocomplete="name" placeholder="이름 (예: 김청송)" required value="${esc(sailor)}"><div class="code-row"><input class="code-in" id="sIn" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="학번 (예: 2023123456)" required><button class="btn">등록</button></div><p class="code-msg" id="cMsg" role="status"></p></form>`;
     $('cf').addEventListener('submit',async e=>{e.preventDefault();msg('등록 중…');try{await register($('nIn').value,$('sIn').value);}catch(err){msg(err.message,1);}});
     return;
   }
@@ -709,11 +724,52 @@ function showMap(v){
 function setView(v){
   $('odysseyView').hidden=v!=='odyssey';
   $('veritasView').hidden=v!=='veritas';
+  $('attendView').hidden=v!=='attend';
   $('vOdyssey').setAttribute('aria-pressed',v==='odyssey');
   $('vVeritas').setAttribute('aria-pressed',v==='veritas');
+  $('vAttend').setAttribute('aria-pressed',v==='attend');
+  if(v==='attend')renderAttend();
 }
 $('vOdyssey').addEventListener('click',()=>{location.hash='map';});
 $('vVeritas').addEventListener('click',()=>{location.hash='veritas';});
+$('vAttend').addEventListener('click',()=>{location.hash='attend';});
+
+/* ---- 출석 인증: 지류 도장판 사진 올리기 ---- */
+const SENT_KEY='odyssey-photo-sent-v1';
+let attImg=null;
+function loadImage(file){return new Promise((ok,no)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{URL.revokeObjectURL(u);ok(im);};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('이 사진 형식은 열 수 없어요. 카메라로 다시 찍거나 JPG/PNG로 골라 주세요.'));};im.src=u;});}
+function shrink(im,max,q){const k=Math.min(1,max/Math.max(im.naturalWidth,im.naturalHeight));const c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*k);c.height=Math.round(im.naturalHeight*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);return c.toDataURL('image/jpeg',q);}
+function renderAttend(){
+  const el=$('attendView'); if(!el)return;
+  if(!API){el.innerHTML=`<div class="att-card"><h3>출석 인증</h3><p>지금은 사진 제출을 받지 않아요.</p></div>`;return;}
+  const sent=lsGet(SENT_KEY);
+  const steps=`<ol><li>부스를 돌며 <b>종이 도장판</b>에 도장을 7개 이상 모아요.</li><li>도장이 모두 보이게 도장판을 찍어요.</li><li>아래에서 사진을 올리면 운영진이 확인해요.</li></ol>`;
+  if(!sailor||!sno){
+    el.innerHTML=`<div class="att-card"><h3>출석 인증</h3>${steps}<form class="code-form" id="af"><label for="anIn">먼저 이름과 학번을 등록해 주세요</label><input class="code-in" id="anIn" maxlength="20" autocomplete="name" placeholder="이름 (예: 김청송)" required><div class="code-row"><input class="code-in" id="asIn" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="학번 (예: 2023123456)" required><button class="btn">등록</button></div><p class="code-msg" id="aMsg" role="status"></p></form></div>`;
+    $('af').addEventListener('submit',async e=>{e.preventDefault();amsg('등록 중…');try{await register($('anIn').value,$('asIn').value);renderAttend();}catch(err){amsg(err.message,1);}});
+    return;
+  }
+  el.innerHTML=`<div class="att-card"><h3>출석 인증</h3>${steps}
+    <p class="who-row" style="text-align:left">선원 <b>${esc(sailor)}</b> (${esc(sno)}) · 웹 도장 ${count()}개</p>
+    ${sent?`<div class="att-done">${esc(sent)}에 사진을 제출했어요. 잘못 찍었다면 다시 올려도 돼요.</div>`:''}
+    <label class="att-drop" id="aDrop"><input type="file" id="aFile" accept="image/*"><span id="aDropTxt"><b>도장판 사진 고르기</b><br>탭하면 카메라나 앨범이 열려요</span><img class="att-prev" id="aPrev" alt="고른 도장판 사진 미리보기" hidden></label>
+    <button class="btn" id="aSend" disabled>사진 제출하기</button>
+    <p class="code-msg" id="aMsg" role="status"></p></div>`;
+  attImg=null;
+  $('aFile').addEventListener('change',async e=>{
+    const f=e.target.files&&e.target.files[0]; if(!f)return;
+    amsg('사진 준비 중…');
+    try{const im=await loadImage(f);attImg={full:shrink(im,1600,.82),thumb:shrink(im,400,.7)};$('aPrev').src=attImg.thumb;$('aPrev').hidden=false;$('aDropTxt').innerHTML='<b>다른 사진으로 바꾸기</b>';$('aSend').disabled=false;amsg('');}
+    catch(err){attImg=null;$('aSend').disabled=true;amsg(err.message,1);}
+  });
+  $('aSend').addEventListener('click',async()=>{
+    if(!attImg)return; const b=$('aSend'); b.disabled=true; b.textContent='올리는 중…'; amsg('');
+    try{const j=await api({action:'photo',name:sailor,image:attImg.full,thumb:attImg.thumb});if(j.stamps)applyServer(j.stamps);
+      const t=new Date().toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});lsSet(SENT_KEY,t);renderAttend();amsg('제출 완료! 운영진이 도장판을 확인할게요.');}
+    catch(err){b.disabled=false;b.textContent='사진 제출하기';amsg(err.message||'제출에 실패했어요. 잠시 뒤 다시 시도해 주세요.',1);}
+  });
+}
+function amsg(t,err){const m=$('aMsg');if(m){m.textContent=t;m.classList.toggle('err',!!err);}}
 /* ---- Veritas Hall A floor plans (traced from the posted plans) ----
    부스 방이 정해지면 여기에 적으면 도면에 핀이 찍혀요. 예: lotus:'301' */
 const BOOTH_ROOMS = {
@@ -837,6 +893,7 @@ selectFloor(curFloor);
 /* ---- routing ---- */
 function route(){
   const h=location.hash.slice(1);
+  if(h==='attend') return showMap('attend');
   if(h==='veritas'||h.startsWith('veritas-')){ const f=h.split('-')[1]; if(f)selectFloor(f); else drawFloor(curFloor); return showMap('veritas'); }
   if(PLACES.some(p=>p.id===h)) return showBooth(h);
   showMap(h==='map'?'odyssey':null);
