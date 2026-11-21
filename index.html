@@ -382,8 +382,8 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
       <ul class="gate-rules">
         <li>섬마다 부스가 있어요. 아홉 곳 모두 들르는 걸 권장해요.</li>
         <li><b>출석은 두 가지를 모두 해야 인정돼요.</b></li>
-        <li><b>① 부스 코드</b> · 부스 활동을 마치면 RA가 4자리 코드를 알려 줘요. 그 부스 페이지에 코드를 넣으면 웹 도장이 찍혀요.</li>
-        <li><b>② 도장판 사진</b> · 종이 도장판에도 도장을 받아요. 7개 이상 모이면 사진을 찍어 위쪽 메뉴의 <b>출석 인증</b> 탭에 올려 주세요.</li>
+        <li><b>① 부스 코드 7개</b> · 부스 활동을 마치면 RA가 4자리 코드를 알려 줘요. 그 부스 페이지에 코드를 넣으면 웹 도장이 찍혀요. 7개 이상 모아 주세요.</li>
+        <li><b>② 팜플렛 사진</b> · 입장할 때 RA가 이름을 적어 주는 팜플렛을 찍어 위쪽 메뉴의 <b>출석 인증</b> 탭에 올려 주세요. 팜플렛에는 따로 도장을 받지 않아도 돼요.</li>
         <li>도장 <b>7개</b>를 모으면 이타카에서 활을 쏠 자격이 생겨요.</li>
       </ul>
       <div class="gate-name" id="gateName" hidden><label for="nameIn">선원 이름</label><input class="code-in" id="nameIn" maxlength="20" autocomplete="name" placeholder="예: 김청송"><label for="snoIn">학번</label><input class="code-in" id="snoIn" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="예: 2023123456"><p class="code-msg err" id="nameMsg" role="alert"></p><p class="who-row">이름과 학번은 도장·출석 확인에만 쓰여요.</p></div>
@@ -416,7 +416,7 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
     <ul class="rules">
       <li>9개 모두 도는 걸 권장</li>
       <li>7개면 이타카 활쏘기 자격</li>
-      <li>출석 = 부스 코드 입력 + <a href="#attend">출석 인증</a> 탭에 도장판 사진</li>
+      <li>출석 = 부스 코드 7개 + <a href="#attend">출석 인증</a> 탭에 이름 적힌 팜플렛 사진</li>
     </ul>
 
     <section id="odysseyView" aria-label="항해도">
@@ -618,7 +618,7 @@ PLACES.forEach(p=>{
 
 /* ---- booth page ---- */
 let pageId=null, mapScrollY=0;
-const ATTEND=`<div class="notice"><strong>출석 인증 방법</strong><ol><li>부스마다 RA가 알려주는 <b>부스 코드</b>를 부스 페이지에 넣어 웹 도장을 받아요.</li><li>종이 도장판에도 도장을 <b>7개 이상</b> 모아요. (9개 모두 권장)</li><li>도장판을 찍어 항해도 위쪽 <a href="#attend">출석 인증</a> 탭에 올리면 출석 확인이 끝나요.</li></ol></div>`;
+const ATTEND=`<div class="notice"><strong>출석 인증 방법</strong><ol><li>부스마다 RA가 알려주는 <b>부스 코드</b>를 부스 페이지에 넣어 웹 도장을 받아요.</li><li>웹 도장을 <b>7개 이상</b> 모아요. (9개 모두 권장)</li><li>입장할 때 받은 <b>이름 적힌 팜플렛</b>을 찍어 항해도 위쪽 <a href="#attend">출석 인증</a> 탭에 올리면 출석 확인이 끝나요.</li></ol></div>`;
 function factsHTML(b,id){
   const rows=[];
   const rs=roomsOf(id);
@@ -632,12 +632,12 @@ function renderStampBox(){
   const p=PLACES.find(q=>q.id===pageId), el=$('stampBox'); if(!el||!p)return;
   const n=count();
   if(p.final){
-    el.innerHTML=n>=NEED?`<div class="lock"><b>활쏘기 자격이 있어요!</b> 지금까지 도장 ${n}개를 체크했어요. 실제 도장판을 RA에게 보여 주세요.</div>`:`<div class="lock">지금까지 체크한 도장 <b>${n}개</b>. 활쏘기 자격까지 <b>${NEED-n}개</b> 더 필요해요.</div>`;
+    el.innerHTML=n>=NEED?`<div class="lock"><b>활쏘기 자격이 있어요!</b> 지금까지 웹 도장 ${n}개를 받았어요. 이 화면을 RA에게 보여 주세요.</div>`:`<div class="lock">지금까지 체크한 도장 <b>${n}개</b>. 활쏘기 자격까지 <b>${NEED-n}개</b> 더 필요해요.</div>`;
     return;
   }
   const done=stamps.has(p.id);
   if(API) return renderCodeBox(p,el,done,n);
-  el.innerHTML=`<button class="btn stamp-btn${done?' done':''}" id="stampBtn">${done?'도장 받음 · 취소하려면 누르기':'이 부스 도장 받았어요'}</button><p class="stamp-note">${statusText(n).replace(/<[^>]+>/g,'')}<br>이 체크는 내 휴대폰에만 저장되는 기록이에요. 출석 인증은 실제 도장판 사진으로 해요.</p>`;
+  el.innerHTML=`<button class="btn stamp-btn${done?' done':''}" id="stampBtn">${done?'도장 받음 · 취소하려면 누르기':'이 부스 도장 받았어요'}</button><p class="stamp-note">${statusText(n).replace(/<[^>]+>/g,'')}<br>이 체크는 내 휴대폰에만 저장되는 기록이에요. 출석 인증은 이름 적힌 팜플렛 사진으로 해요.</p>`;
   $('stampBtn').addEventListener('click',()=>{toggleStamp(p.id);const hn=document.querySelector('.hero-no');if(hn)hn.classList.toggle('done',stamps.has(p.id));});
 }
 function renderCodeBox(p,el,done,n){
@@ -649,7 +649,7 @@ function renderCodeBox(p,el,done,n){
     return;
   }
   if(done){
-    el.innerHTML=`<div class="btn stamp-btn done" role="status">이 부스 도장 받음</div><p class="stamp-note">${st}<br>운영진 기록에도 남았어요. 출석은 도장판 사진도 함께 올려 인증해요.</p>${who}`;
+    el.innerHTML=`<div class="btn stamp-btn done" role="status">이 부스 도장 받음</div><p class="stamp-note">${st}<br>운영진 기록에도 남았어요. 출석은 이름 적힌 팜플렛 사진도 함께 올려 인증해요.</p>${who}`;
   }else{
     el.innerHTML=`<form class="code-form" id="cf"><label for="cIn">부스 코드 (활동을 마치면 RA가 알려 줘요)</label><div class="code-row"><input class="code-in" id="cIn" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="4자리 숫자" required><button class="btn">도장 받기</button></div><p class="code-msg" id="cMsg" role="status"></p></form><p class="stamp-note">${st}</p>${who}`;
     $('cf').addEventListener('submit',async e=>{
@@ -742,7 +742,7 @@ $('vOdyssey').addEventListener('click',()=>{location.hash='map';});
 $('vVeritas').addEventListener('click',()=>{location.hash='veritas';});
 $('vAttend').addEventListener('click',()=>{location.hash='attend';});
 
-/* ---- 출석 인증: 지류 도장판 사진 올리기 ---- */
+/* ---- 출석 인증: 이름 적힌 팜플렛 사진 올리기 ---- */
 const SENT_KEY='odyssey-photo-sent-v1';
 let attImg=null;
 function loadImage(file){return new Promise((ok,no)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{URL.revokeObjectURL(u);ok(im);};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('이 사진 형식은 열 수 없어요. 카메라로 다시 찍거나 JPG/PNG로 골라 주세요.'));};im.src=u;});}
@@ -751,7 +751,7 @@ function renderAttend(){
   const el=$('attendView'); if(!el)return;
   if(!API){el.innerHTML=`<div class="att-card"><h3>출석 인증</h3><p>지금은 사진 제출을 받지 않아요.</p></div>`;return;}
   const sent=lsGet(SENT_KEY);
-  const steps=`<ol><li>부스를 돌며 <b>종이 도장판</b>에 도장을 7개 이상 모아요.</li><li>도장이 모두 보이게 도장판을 찍어요.</li><li>아래에서 사진을 올리면 운영진이 확인해요.</li></ol>`;
+  const steps=`<ol><li>부스 코드로 웹 도장을 <b>7개 이상</b> 모아요.</li><li>입장할 때 RA가 <b>이름을 적어 준 팜플렛</b>을 이름이 잘 보이게 찍어요. 팜플렛에는 도장이 없어도 돼요.</li><li>아래에서 사진을 올리면 운영진이 확인해요.</li></ol>`;
   if(!sailor||!sno){
     el.innerHTML=`<div class="att-card"><h3>출석 인증</h3>${steps}<form class="code-form" id="af"><label for="anIn">먼저 이름과 학번을 등록해 주세요</label><input class="code-in" id="anIn" maxlength="20" autocomplete="name" placeholder="이름 (예: 김청송)" required><div class="code-row"><input class="code-in" id="asIn" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="학번 (예: 2023123456)" required><button class="btn">등록</button></div><p class="code-msg" id="aMsg" role="status"></p></form></div>`;
     $('af').addEventListener('submit',async e=>{e.preventDefault();amsg('등록 중…');try{await register($('anIn').value,$('asIn').value);renderAttend();}catch(err){amsg(err.message,1);}});
@@ -760,7 +760,7 @@ function renderAttend(){
   el.innerHTML=`<div class="att-card"><h3>출석 인증</h3>${steps}
     <p class="who-row" style="text-align:left">선원 <b>${esc(sailor)}</b> (${esc(sno)}) · 웹 도장 ${count()}개</p>
     ${sent?`<div class="att-done">${esc(sent)}에 사진을 제출했어요. 잘못 찍었다면 다시 올려도 돼요.</div>`:''}
-    <label class="att-drop" id="aDrop"><input type="file" id="aFile" accept="image/*"><span id="aDropTxt"><b>도장판 사진 고르기</b><br>탭하면 카메라나 앨범이 열려요</span><img class="att-prev" id="aPrev" alt="고른 도장판 사진 미리보기" hidden></label>
+    <label class="att-drop" id="aDrop"><input type="file" id="aFile" accept="image/*"><span id="aDropTxt"><b>팜플렛 사진 고르기</b><br>탭하면 카메라나 앨범이 열려요</span><img class="att-prev" id="aPrev" alt="고른 팜플렛 사진 미리보기" hidden></label>
     <button class="btn" id="aSend" disabled>사진 제출하기</button>
     <p class="code-msg" id="aMsg" role="status"></p></div>`;
   attImg=null;
@@ -773,7 +773,7 @@ function renderAttend(){
   $('aSend').addEventListener('click',async()=>{
     if(!attImg)return; const b=$('aSend'); b.disabled=true; b.textContent='올리는 중…'; amsg('');
     try{const j=await api({action:'photo',name:sailor,image:attImg.full,thumb:attImg.thumb});if(j.stamps)applyServer(j.stamps);
-      const t=new Date().toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});lsSet(SENT_KEY,t);renderAttend();amsg('제출 완료! 운영진이 도장판을 확인할게요.');}
+      const t=new Date().toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});lsSet(SENT_KEY,t);renderAttend();amsg('제출 완료! 운영진이 팜플렛을 확인할게요.');}
     catch(err){b.disabled=false;b.textContent='사진 제출하기';amsg(err.message||'제출에 실패했어요. 잠시 뒤 다시 시도해 주세요.',1);}
   });
 }
