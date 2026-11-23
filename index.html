@@ -244,6 +244,7 @@ h1{margin:0;font-family:var(--f-title);font-weight:400;font-size:clamp(36px,6.5v
 .att-drop input{position:absolute;width:1px;height:1px;opacity:0}
 .att-drop:focus-within{outline:3px solid var(--lapis);outline-offset:2px}
 .att-prev{max-width:100%;max-height:360px;border-radius:8px;object-fit:contain}
+.quiz-btn{display:block;margin-top:16px}
 .att-done{padding:12px 14px;border-radius:10px;border:1.5px solid var(--gold);font-size:14.5px}
 .code-form{display:flex;flex-direction:column;gap:8px}
 .code-form label{font-size:14px;font-weight:700}
@@ -535,6 +536,7 @@ const PLACES = [
   booth:{ title:"이타카로의 귀환", final:true,
     about:"아홉 섬을 지나온 선원들의 마지막 목적지예요. 궁전을 차지한 구혼자들을 몰아내려면 오디세우스처럼 활 솜씨를 증명해야 해요. <b>Nostoi</b>에서는 활을 쏘아 점수로 순위를 겨루고, 순위는 대강의실 앞 화면에 실시간으로 떠요. 몇 번이든 다시 도전할 수 있어요. 활동이 끝났을 때 1~4등에게 상품을 드려요. 어떤 상품인지는 비밀이에요! <b>페넬로페의 질문</b>에서는 남편을 쉽게 믿지 않는 페넬로페에게 오디세이아 퀴즈로 정체를 증명하세요. 통과하면 작은 간식이 기다려요.",
     who:"개인 · 활쏘기는 도장 7개 이상", gets:["1~4등 상품 (비공개)","퀴즈 통과 시 간식"],
+    quiz:"https://forms.gle/VgBTSk9LTBM3AESY7",
     attend:true } }
 ];
 const NEED=7, BOOTHS=PLACES.filter(p=>!p.final), TOTAL=BOOTHS.length;
@@ -705,6 +707,7 @@ function showBooth(id){
       <p class="booth-name">${b.title}</p>
       <p>${b.about}</p>
       ${factsHTML(b,p.id)}
+      ${b.quiz?`<a class="btn quiz-btn" href="${b.quiz}" target="_blank" rel="noopener">페넬로페의 질문 · 퀴즈 풀러 가기</a>`:''}
       ${b.attend?ATTEND:''}
     </div>
     <div class="stampbox" id="stampBox"></div>
