@@ -574,17 +574,31 @@ const KEY='odyssey-stamps-v1', SNO_KEY='odyssey-sno-v1', NAME_KEY='odyssey-name-
 const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}}, lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 let sno=lsGet(SNO_KEY)||'', sailor=lsGet(NAME_KEY)||'';
 const SNO_RE=/^\d{8,10}$/;
-async function api(body){
-  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...body,sno})});
-  const j=await r.json(); if(!j.ok) throw new Error(j.error||'요청에 실패했어요.'); return j;
+/* 서버가 붐비거나 연결이 끊기면 자동으로 몇 번 더 시도해요 (사용자는 기다리기만 하면 돼요). */
+async function api(body,onRetry){
+  const TRIES=5;
+  for(let i=0;i<TRIES;i++){
+    let j=null;
+    try{
+      const ctl=new AbortController(), tm=setTimeout(()=>ctl.abort(),45000);
+      const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...body,sno}),signal:ctl.signal});
+      clearTimeout(tm); j=await r.json();
+    }catch(e){ j=null; }
+    if(j&&j.ok) return j;
+    if(j&&!j.retry) throw new Error(j.error||'요청에 실패했어요.');
+    if(i===TRIES-1) throw new Error('사람이 많아 연결이 밀렸어요. 잠시 후 다시 눌러 주세요.');
+    if(onRetry) onRetry(i+1);
+    await new Promise(r=>setTimeout(r,1500*(i+1)+Math.random()*2000));
+  }
 }
+const BUSY='사람이 많아 잠깐 기다리는 중이에요… 창을 닫지 말아 주세요.';
 function applyServer(list){stamps=new Set(list||[]);saveStamps();renderStamps();if(pageId)renderStampBox();}
 async function register(name,no){
   no=String(no||'').replace(/\D/g,''); name=String(name||'').trim();
   if(!name) throw new Error('이름을 적어 주세요.');
   if(!SNO_RE.test(no)) throw new Error('학번을 숫자로 정확히 적어 주세요.');
   const prev=sno; sno=no;
-  try{const j=await api({action:'register',name});sailor=j.name;lsSet(NAME_KEY,sailor);lsSet(SNO_KEY,sno);applyServer(j.stamps);}
+  try{const j=await api({action:'register',name},()=>{const m=document.getElementById('nameMsg')||document.getElementById('cMsg')||document.getElementById('aMsg');if(m)m.textContent=BUSY;});sailor=j.name;lsSet(NAME_KEY,sailor);lsSet(SNO_KEY,sno);applyServer(j.stamps);}
   catch(e){sno=prev;throw e;}
 }
 let stamps=new Set();
@@ -680,7 +694,7 @@ function renderCodeBox(p,el,done,n){
     $('cf').addEventListener('submit',async e=>{
       e.preventDefault();const v=$('cIn').value.trim();if(!v)return;
       const b=e.target.querySelector('button');b.disabled=true;msg('확인 중…');
-      try{const j=await api({action:'stamp',booth:p.id,code:v,name:sailor});applyServer(j.stamps);const hn=document.querySelector('.hero-no');if(hn)hn.classList.add('done');}
+      try{const j=await api({action:'stamp',booth:p.id,code:v,name:sailor},()=>msg(BUSY));applyServer(j.stamps);const hn=document.querySelector('.hero-no');if(hn)hn.classList.add('done');}
       catch(err){b.disabled=false;msg(err.message,1);}
     });
   }
@@ -798,7 +812,7 @@ function renderAttend(){
   });
   $('aSend').addEventListener('click',async()=>{
     if(!attImg)return; const b=$('aSend'); b.disabled=true; b.textContent='올리는 중…'; amsg('');
-    try{const j=await api({action:'photo',name:sailor,image:attImg.full,thumb:attImg.thumb});if(j.stamps)applyServer(j.stamps);
+    try{const j=await api({action:'photo',name:sailor,image:attImg.full,thumb:attImg.thumb},()=>amsg(BUSY));if(j.stamps)applyServer(j.stamps);
       const t=new Date().toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});lsSet(SENT_KEY,t);renderAttend();amsg('제출 완료! 운영진이 팜플렛을 확인할게요.');}
     catch(err){b.disabled=false;b.textContent='사진 제출하기';amsg(err.message||'제출에 실패했어요. 잠시 뒤 다시 시도해 주세요.',1);}
   });
@@ -956,7 +970,7 @@ $('enter').addEventListener('click',async()=>{
   finally{$('enter').disabled=false;$('enter').textContent='승선하기';}
 });
 ['nameIn','snoIn'].forEach(i=>$(i).addEventListener('keydown',e=>{if(e.key==='Enter')$('enter').click();}));
-if(API&&sno) api({action:'status'}).then(j=>{if(j.registered){sailor=j.name;lsSet(NAME_KEY,sailor);applyServer(j.stamps);}}).catch(()=>{});
+if(API&&sno&&Date.now()-Number(lsGet('odyssey-status-at')||0)>5*60*1000) api({action:'status'}).then(j=>{if(j.registered){sailor=j.name;lsSet(NAME_KEY,sailor);applyServer(j.stamps);lsSet('odyssey-status-at',String(Date.now()));}}).catch(()=>{});
 if(location.hash.length>1){enter();}else{document.body.style.overflow='hidden';$('enter').focus({preventScroll:true});}
 
 renderStamps();
