@@ -245,6 +245,14 @@ h1{margin:0;font-family:var(--f-title);font-weight:400;font-size:clamp(36px,6.5v
 .att-drop:focus-within{outline:3px solid var(--lapis);outline-offset:2px}
 .att-prev{max-width:100%;max-height:360px;border-radius:8px;object-fit:contain}
 .quiz-btn{display:block;margin-top:16px}
+.notice-pop{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:20px;background:rgba(6,5,4,.72)}
+.notice-pop[hidden]{display:none}
+.np-card{width:100%;max-width:380px;background:var(--parch-hi);border:2px solid var(--gold);border-radius:14px;padding:22px 20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
+.np-card h3{margin:0;font-family:var(--f-title);font-weight:400;font-size:22px;color:var(--lapis-deep);text-align:center}
+.np-card ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.np-card li{padding:10px 12px;border:1.5px dashed var(--gold-deep);border-radius:8px;font-size:15px;line-height:1.5}
+.np-card li b{color:var(--verm)}
+.np-card .btn{align-self:center}
 .att-done{padding:12px 14px;border-radius:10px;border:1.5px solid var(--gold);font-size:14.5px}
 .code-form{display:flex;flex-direction:column;gap:8px}
 .code-form label{font-size:14px;font-weight:700}
@@ -351,6 +359,9 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
 .att-card{background:#15130f;border-color:rgba(201,164,92,.45)}
 .att-card h3{color:var(--gold-hi)}
 .att-drop{border-color:rgba(201,164,92,.55);color:var(--gold-hi)}
+.np-card{background:#15130f}
+.np-card h3{color:var(--gold-hi)}
+.np-card li b{color:var(--hot)}
 .code-in{background:#15130f;border-color:rgba(201,164,92,.55);color:var(--gold-hi)}
 .code-msg.err{color:var(--hot)}
 .pager a:hover{color:var(--gold-hi)}
@@ -371,6 +382,18 @@ h1{color:var(--gold-hi);letter-spacing:.02em;text-shadow:0 0 30px rgba(236,210,1
 .fp a:focus-visible{outline:none}
 .fp a:focus-visible .hit{stroke:#8f2a17;stroke-width:3;stroke-dasharray:8 5}
 </style>
+
+<!-- 방 변경 공지 (한 번 확인하면 다시 안 떠요. 새 공지는 NOTICE_KEY 버전을 올리면 돼요) -->
+<div class="notice-pop" id="roomNotice" role="dialog" aria-modal="true" aria-labelledby="npTitle" hidden>
+  <div class="np-card">
+    <h3 id="npTitle">부스 위치 변경 안내</h3>
+    <ul>
+      <li>칼립소의 카페 (오기기아)<br>401호 → <b>306호</b></li>
+      <li>파이아키아의 연회 (스케리아)<br>306호 → <b>401호</b></li>
+    </ul>
+    <button class="btn" id="npOk">확인했어요</button>
+  </div>
+</div>
 
 <!-- welcome gate -->
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
@@ -785,7 +808,7 @@ function amsg(t,err){const m=$('aMsg');if(m){m.textContent=t;m.classList.toggle(
    부스 방이 정해지면 여기에 적으면 도면에 핀이 찍혀요. 예: lotus:'301' */
 const BOOTH_ROOMS = {
   lotus:'406', cyclops:'408', laestrygonians:'407', aiaia:'403', sirens:'309',
-  scylla:'310', thrinacia:'402', ogygia:'401', scheria:'306', ithaca:'303'
+  scylla:'310', thrinacia:'402', ogygia:'306', scheria:'401', ithaca:'303'
 };
 // [type, x, y, w, h, label]  r=room v=open s=stairs e=elevator w=restroom t=terrace
 const FLOORS = {
@@ -938,6 +961,17 @@ if(location.hash.length>1){enter();}else{document.body.style.overflow='hidden';$
 
 renderStamps();
 route();
+/* ---- 방 변경 공지 ---- */
+(function(){
+  const NOTICE_KEY='odyssey-room-notice-1125', el=$('roomNotice');
+  if(lsGet(NOTICE_KEY))return;
+  const close=()=>{el.hidden=true;lsSet(NOTICE_KEY,'1');};
+  el.hidden=false;
+  $('npOk').addEventListener('click',close);
+  el.querySelectorAll('[data-close]').forEach(a=>a.addEventListener('click',close));
+  el.addEventListener('click',e=>{if(e.target===el)close();});
+  $('npOk').focus({preventScroll:true});
+})();
 booted=true;
 </script>
 
